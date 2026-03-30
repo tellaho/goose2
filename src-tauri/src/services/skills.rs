@@ -153,7 +153,27 @@ impl SkillStore {
     pub fn delete(&self, id: &str) -> Result<(), String> {
         // Strip the "skill-" prefix to get the directory name
         let dir_name = id.strip_prefix("skill-").unwrap_or(id);
+
+        // Validate dir_name is safe kebab-case (no path separators or traversal)
+        let re = regex::Regex::new(r"^[a-z0-9]+(-[a-z0-9]+)*$").unwrap();
+        if !re.is_match(dir_name) {
+            return Err("Invalid skill id".to_string());
+        }
+
         let skill_dir = self.skills_dir.join(dir_name);
+
+        // Confirm the resolved path stays inside skills_dir
+        let canonical_skill_dir = skill_dir
+            .canonicalize()
+            .unwrap_or_else(|_| skill_dir.clone());
+        let canonical_skills_dir = self
+            .skills_dir
+            .canonicalize()
+            .unwrap_or_else(|_| self.skills_dir.clone());
+        if !canonical_skill_dir.starts_with(&canonical_skills_dir) {
+            return Err("Invalid skill id".to_string());
+        }
+
         if skill_dir.exists() {
             std::fs::remove_dir_all(&skill_dir)
                 .map_err(|e| format!("Failed to delete skill: {}", e))?;

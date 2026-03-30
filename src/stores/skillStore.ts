@@ -45,6 +45,7 @@ export const useSkillStore = create<SkillStore>()((set) => ({
   },
 
   createSkill: async (request) => {
+    set({ error: null });
     const skill = await invoke<Skill>("create_skill", { request });
     set((state) => ({
       skills: [...state.skills, skill].sort((a, b) =>
@@ -55,6 +56,7 @@ export const useSkillStore = create<SkillStore>()((set) => ({
   },
 
   deleteSkill: async (id) => {
+    set({ error: null });
     await invoke("delete_skill", { id });
     set((state) => ({ skills: state.skills.filter((s) => s.id !== id) }));
   },

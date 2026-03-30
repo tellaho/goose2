@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 export interface AgentConfig {
   id: string;
   name: string;
-  description: string | null;
+  description?: string;
   instructions: string;
   filePath: string;
   source: string;

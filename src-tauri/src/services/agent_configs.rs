@@ -171,6 +171,19 @@ impl AgentConfigStore {
         Ok(config)
     }
 
+    fn validate_in_agents_dir(agents_dir: &PathBuf, file_path: &PathBuf) -> Result<(), String> {
+        let canonical_file = file_path
+            .canonicalize()
+            .unwrap_or_else(|_| file_path.clone());
+        let canonical_agents = agents_dir
+            .canonicalize()
+            .unwrap_or_else(|_| agents_dir.clone());
+        if !canonical_file.starts_with(&canonical_agents) {
+            return Err("Invalid agent config id".to_string());
+        }
+        Ok(())
+    }
+
     pub fn update(&self, id: &str, req: UpdateAgentConfigRequest) -> Result<AgentConfig, String> {
         let mut configs = self.configs.lock().unwrap();
         let existing = configs
@@ -187,6 +200,7 @@ impl AgentConfigStore {
         let instructions = req.instructions.unwrap_or(existing.instructions);
 
         let file_path = PathBuf::from(&existing.file_path);
+        Self::validate_in_agents_dir(&self.agents_dir, &file_path)?;
         Self::write_agent_file(&file_path, &name, &description, &instructions)?;
 
         let updated = Self::parse_agent_file(&file_path)
@@ -207,6 +221,7 @@ impl AgentConfigStore {
             .ok_or_else(|| format!("Agent config '{}' not found", id))?;
 
         let file_path = PathBuf::from(&existing.file_path);
+        Self::validate_in_agents_dir(&self.agents_dir, &file_path)?;
         std::fs::remove_file(&file_path).map_err(|e| format!("Failed to delete file: {}", e))?;
 
         configs.retain(|c| c.id != id);

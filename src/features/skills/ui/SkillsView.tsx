@@ -139,11 +139,17 @@ export function SkillsView() {
                     </div>
                   </div>
 
-                  {expandedId === skill.id && skill.content && (
+                  {expandedId === skill.id && (
                     <div className="border-t border-border px-4 py-3">
-                      <pre className="text-xs text-foreground-secondary whitespace-pre-wrap font-mono leading-relaxed">
-                        {skill.content}
-                      </pre>
+                      {skill.content ? (
+                        <pre className="text-xs text-foreground-secondary whitespace-pre-wrap font-mono leading-relaxed">
+                          {skill.content}
+                        </pre>
+                      ) : (
+                        <p className="text-xs text-foreground-secondary/60 italic">
+                          No instructions.
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
