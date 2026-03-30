@@ -171,13 +171,16 @@ impl AgentConfigStore {
         Ok(config)
     }
 
-    fn validate_in_agents_dir(agents_dir: &PathBuf, file_path: &PathBuf) -> Result<(), String> {
+    fn validate_in_agents_dir(
+        agents_dir: &std::path::Path,
+        file_path: &std::path::Path,
+    ) -> Result<(), String> {
         let canonical_file = file_path
             .canonicalize()
-            .unwrap_or_else(|_| file_path.clone());
+            .unwrap_or_else(|_| file_path.to_path_buf());
         let canonical_agents = agents_dir
             .canonicalize()
-            .unwrap_or_else(|_| agents_dir.clone());
+            .unwrap_or_else(|_| agents_dir.to_path_buf());
         if !canonical_file.starts_with(&canonical_agents) {
             return Err("Invalid agent config id".to_string());
         }
