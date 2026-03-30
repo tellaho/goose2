@@ -41,7 +41,10 @@ pub fn parse_persona_files(
 }
 
 #[tauri::command]
-pub fn export_persona_to_json(store: State<'_, PersonaStore>, id: String) -> Result<String, String> {
+pub fn export_persona_to_json(
+    store: State<'_, PersonaStore>,
+    id: String,
+) -> Result<String, String> {
     let persona = store
         .get(&id)
         .ok_or_else(|| format!("Persona '{}' not found", id))?;

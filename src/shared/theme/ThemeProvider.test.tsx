@@ -64,7 +64,7 @@ describe("ThemeProvider", () => {
         <ThemeConsumer />
       </ThemeProvider>,
     );
-    expect(screen.getByTestId("accent")).toHaveTextContent("#3b82f6");
+    expect(screen.getByTestId("accent")).toHaveTextContent("#6366f1");
   });
 
   it("provides default density", () => {

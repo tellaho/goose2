@@ -61,13 +61,19 @@ pub fn parse_persona_bytes(data: &[u8], filename: &str) -> Result<ParseResult, S
     if data.len() >= 4 && data[0..4] == [0x50, 0x4B, 0x03, 0x04] {
         // ZIP
         if data.len() > MAX_ZIP_SIZE {
-            return Err(format!("ZIP file too large (max {} MB)", MAX_ZIP_SIZE / 1024 / 1024));
+            return Err(format!(
+                "ZIP file too large (max {} MB)",
+                MAX_ZIP_SIZE / 1024 / 1024
+            ));
         }
         parse_zip(data)
     } else if data[0] == b'{' {
         // JSON
         if data.len() > MAX_JSON_SIZE {
-            return Err(format!("JSON file too large (max {} MB)", MAX_JSON_SIZE / 1024 / 1024));
+            return Err(format!(
+                "JSON file too large (max {} MB)",
+                MAX_JSON_SIZE / 1024 / 1024
+            ));
         }
         parse_json(data, filename)
     } else {
@@ -76,11 +82,10 @@ pub fn parse_persona_bytes(data: &[u8], filename: &str) -> Result<ParseResult, S
 }
 
 fn parse_json(data: &[u8], _filename: &str) -> Result<ParseResult, String> {
-    let text = std::str::from_utf8(data)
-        .map_err(|_| "Invalid UTF-8 in JSON file".to_string())?;
+    let text = std::str::from_utf8(data).map_err(|_| "Invalid UTF-8 in JSON file".to_string())?;
 
-    let card: PersonaCardV1 = serde_json::from_str(text)
-        .map_err(|e| format!("Invalid persona JSON: {}", e))?;
+    let card: PersonaCardV1 =
+        serde_json::from_str(text).map_err(|e| format!("Invalid persona JSON: {}", e))?;
 
     if card.display_name.trim().is_empty() {
         return Err("Persona displayName is required".to_string());
@@ -103,8 +108,8 @@ fn parse_json(data: &[u8], _filename: &str) -> Result<ParseResult, String> {
 
 fn parse_zip(data: &[u8]) -> Result<ParseResult, String> {
     let reader = std::io::Cursor::new(data);
-    let mut archive = zip::ZipArchive::new(reader)
-        .map_err(|e| format!("Invalid ZIP archive: {}", e))?;
+    let mut archive =
+        zip::ZipArchive::new(reader).map_err(|e| format!("Invalid ZIP archive: {}", e))?;
 
     let mut personas = Vec::new();
     let mut skipped = Vec::new();
@@ -113,7 +118,8 @@ fn parse_zip(data: &[u8]) -> Result<ParseResult, String> {
     let count = archive.len().min(MAX_ZIP_ENTRIES);
 
     for i in 0..count {
-        let mut file = archive.by_index(i)
+        let mut file = archive
+            .by_index(i)
             .map_err(|e| format!("Error reading ZIP entry: {}", e))?;
 
         let name = file.name().to_string();
@@ -171,8 +177,7 @@ pub fn export_persona_to_json(persona: &Persona) -> Result<String, String> {
         model: persona.model.clone(),
     };
 
-    serde_json::to_string_pretty(&card)
-        .map_err(|e| format!("Failed to serialize persona: {}", e))
+    serde_json::to_string_pretty(&card).map_err(|e| format!("Failed to serialize persona: {}", e))
 }
 
 /// Convert a ParsedPersona into a CreatePersonaRequest

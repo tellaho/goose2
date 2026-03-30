@@ -35,10 +35,7 @@ pub fn update_agent_config(
 }
 
 #[tauri::command]
-pub fn delete_agent_config(
-    store: State<'_, AgentConfigStore>,
-    id: String,
-) -> Result<(), String> {
+pub fn delete_agent_config(store: State<'_, AgentConfigStore>, id: String) -> Result<(), String> {
     store.delete(&id)
 }
 

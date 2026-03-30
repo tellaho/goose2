@@ -50,10 +50,7 @@ impl AgentConfigStore {
             .ok()
             .and_then(|t| {
                 let duration = t.duration_since(std::time::UNIX_EPOCH).ok()?;
-                Some(
-                    chrono::DateTime::from_timestamp(duration.as_secs() as i64, 0)?
-                        .to_rfc3339(),
-                )
+                Some(chrono::DateTime::from_timestamp(duration.as_secs() as i64, 0)?.to_rfc3339())
             })
             .unwrap_or_default();
 
@@ -103,7 +100,9 @@ impl AgentConfigStore {
             }
         }
 
-        let name = name.filter(|n| !n.is_empty()).unwrap_or_else(|| "Untitled".to_string());
+        let name = name
+            .filter(|n| !n.is_empty())
+            .unwrap_or_else(|| "Untitled".to_string());
         Some((name, description, instructions))
     }
 
@@ -118,7 +117,12 @@ impl AgentConfigStore {
             .join("-")
     }
 
-    fn write_agent_file(path: &std::path::Path, name: &str, description: &Option<String>, instructions: &str) -> Result<(), String> {
+    fn write_agent_file(
+        path: &std::path::Path,
+        name: &str,
+        description: &Option<String>,
+        instructions: &str,
+    ) -> Result<(), String> {
         let mut content = String::from("---\n");
         content.push_str(&format!("name: {}\n", name));
         if let Some(desc) = description {
@@ -129,7 +133,8 @@ impl AgentConfigStore {
         content.push('\n');
 
         if let Some(parent) = path.parent() {
-            std::fs::create_dir_all(parent).map_err(|e| format!("Failed to create directory: {}", e))?;
+            std::fs::create_dir_all(parent)
+                .map_err(|e| format!("Failed to create directory: {}", e))?;
         }
         std::fs::write(path, content).map_err(|e| format!("Failed to write file: {}", e))
     }
@@ -202,8 +207,7 @@ impl AgentConfigStore {
             .ok_or_else(|| format!("Agent config '{}' not found", id))?;
 
         let file_path = PathBuf::from(&existing.file_path);
-        std::fs::remove_file(&file_path)
-            .map_err(|e| format!("Failed to delete file: {}", e))?;
+        std::fs::remove_file(&file_path).map_err(|e| format!("Failed to delete file: {}", e))?;
 
         configs.retain(|c| c.id != id);
         Ok(())
