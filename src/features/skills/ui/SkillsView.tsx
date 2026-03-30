@@ -42,7 +42,7 @@ export function SkillsView() {
   );
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 min-h-0 overflow-y-auto">
       <div className="max-w-5xl mx-auto w-full px-6 py-8 space-y-5 page-transition">
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-3">

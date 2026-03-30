@@ -13,6 +13,7 @@ import {
   exportPersonaToJson,
   createPersona,
 } from "@/shared/api/agents";
+import { updateAgentConfig } from "@/shared/api/agentConfigs";
 import type {
   Persona,
   Agent,
@@ -168,7 +169,17 @@ export function AgentsView() {
   // ── Persona CRUD ──
 
   const handleSavePersona = useCallback(
-    (data: CreatePersonaRequest | UpdatePersonaRequest) => {
+    async (data: CreatePersonaRequest | UpdatePersonaRequest) => {
+      if (editingPersona?.id?.startsWith("agent-config-")) {
+        const configId = editingPersona.id.replace("agent-config-", "");
+        await updateAgentConfig(configId, {
+          name: (data as CreatePersonaRequest).displayName,
+          instructions: (data as CreatePersonaRequest).systemPrompt,
+        });
+        updatePersona(editingPersona.id, data as Partial<Persona>);
+        closePersonaEditor();
+        return;
+      }
       if (editingPersona) {
         updatePersona(editingPersona.id, data as Partial<Persona>);
       } else {
@@ -217,7 +228,7 @@ export function AgentsView() {
     // biome-ignore lint/a11y/noStaticElementInteractions: drag-and-drop zone for file import
     <div
       className={cn(
-        "flex-1 overflow-y-auto",
+        "flex-1 min-h-0 overflow-y-auto",
         isDragOver && "ring-2 ring-inset ring-blue-400/50",
       )}
       onDragOver={onDragOver}
