@@ -17,6 +17,7 @@ interface AgentConfigStore {
   error: string | null;
   loadAgents: () => Promise<void>;
   refreshAgents: () => Promise<void>;
+  stopRefresh: () => void;
   deleteAgent: (id: string) => Promise<void>;
 }
 
@@ -53,6 +54,13 @@ export const useAgentConfigStore = create<AgentConfigStore>()((set) => ({
           err instanceof Error ? err.message : "Failed to load agent configs",
         loading: false,
       });
+    }
+  },
+
+  stopRefresh: () => {
+    if (refreshTimer) {
+      clearInterval(refreshTimer);
+      refreshTimer = null;
     }
   },
 

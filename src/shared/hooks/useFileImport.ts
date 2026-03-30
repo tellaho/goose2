@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
 interface UseFileImportOptions {
   accept?: string;
@@ -11,6 +11,8 @@ export function useFileImport({
 }: UseFileImportOptions) {
   const [isDragOver, setIsDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const callbackRef = useRef(onFilesSelected);
+  callbackRef.current = onFilesSelected;
 
   const readFile = useCallback(
     async (file: File): Promise<{ data: number[]; filename: string }> => {
@@ -27,10 +29,20 @@ export function useFileImport({
     async (fileList: FileList | File[]) => {
       const files = Array.from(fileList);
       const results = await Promise.all(files.map(readFile));
-      onFilesSelected(results);
+      callbackRef.current(results);
     },
-    [readFile, onFilesSelected],
+    [readFile],
   );
+
+  // Clean up the hidden input element on unmount
+  useEffect(() => {
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.remove();
+        inputRef.current = null;
+      }
+    };
+  }, []);
 
   const onDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -66,7 +78,6 @@ export function useFileImport({
         if (input.files && input.files.length > 0) {
           handleFiles(input.files);
         }
-        // Reset so same file can be re-selected
         input.value = "";
       });
       document.body.appendChild(input);
