@@ -25,3 +25,34 @@ export async function updatePersona(
 export async function deletePersona(id: string): Promise<void> {
   return invoke("delete_persona", { id });
 }
+
+// ── Import / Export ──
+
+export interface ParsedPersona {
+  displayName: string;
+  systemPrompt: string;
+  avatarUrl?: string;
+  provider?: string;
+  model?: string;
+}
+
+export interface SkippedFile {
+  filename: string;
+  reason: string;
+}
+
+export interface ParseResult {
+  personas: ParsedPersona[];
+  skipped: SkippedFile[];
+}
+
+export async function parsePersonaFiles(
+  data: number[],
+  filename: string,
+): Promise<ParseResult> {
+  return invoke("parse_persona_files", { data, filename });
+}
+
+export async function exportPersonaToJson(id: string): Promise<string> {
+  return invoke("export_persona_to_json", { id });
+}

@@ -9,6 +9,9 @@ import { AgentsView } from "@/features/agents/ui/AgentsView";
 import { SettingsModal } from "@/features/settings/ui/SettingsModal";
 import { useChatStore } from "@/features/chat/stores/chatStore";
 import { useAgentStore } from "@/features/agents/stores/agentStore";
+import { useAgentConfigStore } from "@/stores/agentConfigStore";
+import { useSkillStore } from "@/stores/skillStore";
+import { listPersonas } from "@/shared/api/agents";
 import type { Tab } from "@/features/tabs/types";
 
 export type AppView = "home" | "chat" | "skills" | "agents";
@@ -25,6 +28,18 @@ export function AppShell({ children }: { children?: React.ReactNode }) {
 
   const chatStore = useChatStore();
   const agentStore = useAgentStore();
+  const loadAgentConfigs = useAgentConfigStore((s) => s.loadAgents);
+  const loadSkills = useSkillStore((s) => s.loadSkills);
+
+  // Load personas, agent configs, and skills on startup
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally run only on mount to seed data once
+  useEffect(() => {
+    listPersonas().then((personas) => {
+      agentStore.setPersonas(personas);
+    });
+    loadAgentConfigs();
+    loadSkills();
+  }, []);
 
   const isHome = activeTabId === null && activeView === "home";
   const activeTab = tabs.find((t) => t.id === activeTabId) ?? null;

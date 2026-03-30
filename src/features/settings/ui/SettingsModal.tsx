@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/shared/lib/cn";
 import { Palette, Settings2, Info, X } from "lucide-react";
 import { AppearanceSettings } from "./AppearanceSettings";
+import { GeneralSettings } from "./GeneralSettings";
 
 const NAV_ITEMS = [
   { id: "appearance", label: "Appearance", icon: Palette },
@@ -129,14 +130,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
               }}
             >
               {activeSection === "appearance" && <AppearanceSettings />}
-              {activeSection === "general" && (
-                <div>
-                  <h3 className="text-lg font-semibold">General</h3>
-                  <p className="mt-1 text-sm text-foreground-secondary">
-                    General settings will appear here.
-                  </p>
-                </div>
-              )}
+              {activeSection === "general" && <GeneralSettings />}
               {activeSection === "about" && (
                 <div>
                   <h3 className="text-lg font-semibold">About</h3>

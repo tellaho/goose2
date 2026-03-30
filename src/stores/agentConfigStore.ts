@@ -1,14 +1,27 @@
 import { create } from "zustand";
-import { apiFetch } from "@/shared/api";
-import type { AgentConfig } from "@/types";
+import { invoke } from "@tauri-apps/api/core";
+
+export interface AgentConfig {
+  id: string;
+  name: string;
+  description?: string;
+  instructions: string;
+  filePath: string;
+  source: string;
+  lastModified: string;
+}
 
 interface AgentConfigStore {
   agents: AgentConfig[];
   loading: boolean;
   error: string | null;
   loadAgents: () => Promise<void>;
+  refreshAgents: () => Promise<void>;
   deleteAgent: (id: string) => Promise<void>;
 }
+
+const REFRESH_INTERVAL_MS = 30_000; // 30 seconds
+let refreshTimer: ReturnType<typeof setInterval> | null = null;
 
 export const useAgentConfigStore = create<AgentConfigStore>()((set) => ({
   agents: [],
@@ -18,21 +31,47 @@ export const useAgentConfigStore = create<AgentConfigStore>()((set) => ({
   loadAgents: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await apiFetch("/agent-configs/list");
-      if (!res.ok) throw new Error(`Failed to load agents: ${res.status}`);
-      const data = await res.json();
-      set({ agents: data.agents ?? [], loading: false });
+      const agents = await invoke<AgentConfig[]>("list_agent_configs");
+      set({ agents, loading: false });
+
+      // Set up periodic refresh if not already running
+      if (!refreshTimer) {
+        refreshTimer = setInterval(async () => {
+          try {
+            const refreshed = await invoke<AgentConfig[]>(
+              "refresh_agent_configs",
+            );
+            set({ agents: refreshed });
+          } catch {
+            // Silent refresh failure — don't overwrite existing data
+          }
+        }, REFRESH_INTERVAL_MS);
+      }
     } catch (err) {
       set({
-        error: err instanceof Error ? err.message : "Failed to load agents",
+        error:
+          err instanceof Error ? err.message : "Failed to load agent configs",
         loading: false,
       });
     }
   },
 
+  refreshAgents: async () => {
+    try {
+      const agents = await invoke<AgentConfig[]>("refresh_agent_configs");
+      set({ agents });
+    } catch (err) {
+      set({
+        error:
+          err instanceof Error
+            ? err.message
+            : "Failed to refresh agent configs",
+      });
+    }
+  },
+
   deleteAgent: async (id) => {
-    const res = await apiFetch(`/agent-configs/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error(`Failed to delete agent: ${res.status}`);
+    await invoke("delete_agent_config", { id });
     set((state) => ({ agents: state.agents.filter((a) => a.id !== id) }));
   },
 }));

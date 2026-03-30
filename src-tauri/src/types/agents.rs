@@ -80,6 +80,37 @@ pub struct Session {
     pub last_message_preview: Option<String>,
 }
 
+// ── Agent Configs (from ~/.goose/agents/) ──
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AgentConfig {
+    pub id: String,
+    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    pub instructions: String,
+    pub file_path: String,
+    pub source: String,
+    pub last_modified: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CreateAgentConfigRequest {
+    pub name: String,
+    pub description: Option<String>,
+    pub instructions: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateAgentConfigRequest {
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub instructions: Option<String>,
+}
+
 /// Built-in persona definitions
 pub fn builtin_personas() -> Vec<Persona> {
     let now = chrono::Utc::now().to_rfc3339();

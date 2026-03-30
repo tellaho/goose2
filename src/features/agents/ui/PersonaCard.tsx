@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MoreVertical, Copy, Pencil, Trash2 } from "lucide-react";
+import { MoreVertical, Copy, Pencil, Trash2, Download } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import type { Persona } from "@/shared/types/agents";
 
@@ -9,6 +9,7 @@ interface PersonaCardProps {
   onEdit?: (persona: Persona) => void;
   onDuplicate?: (persona: Persona) => void;
   onDelete?: (persona: Persona) => void;
+  onExport?: (persona: Persona) => void;
   isActive?: boolean;
 }
 
@@ -18,6 +19,7 @@ export function PersonaCard({
   onEdit,
   onDuplicate,
   onDelete,
+  onExport,
   isActive = false,
 }: PersonaCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -107,6 +109,19 @@ export function PersonaCard({
             >
               <Copy className="h-3.5 w-3.5" />
               Duplicate
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpen(false);
+                onExport?.(persona);
+              }}
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-secondary transition-colors"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export
             </button>
             <button
               type="button"

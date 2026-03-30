@@ -1,4 +1,5 @@
 import * as React from "react";
+import { getSettings, updateSettings } from "@/shared/api/settings";
 
 type ThemePreference = "light" | "dark" | "system";
 type ResolvedTheme = "light" | "dark";
@@ -36,6 +37,7 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
 }: ThemeProviderProps) {
+  // Use localStorage as a fast initial render fallback before Tauri is ready
   const [theme, setThemeState] = React.useState<ThemePreference>(() => {
     const stored = localStorage.getItem(
       "goose-theme",
@@ -48,7 +50,7 @@ export function ThemeProvider({
   );
 
   const [accentColor, setAccentColorState] = React.useState<string>(() => {
-    return localStorage.getItem("goose-accent-color") ?? "#3b82f6";
+    return localStorage.getItem("goose-accent-color") ?? "#6366f1";
   });
 
   const [density, setDensityState] = React.useState<Density>(() => {
@@ -56,19 +58,40 @@ export function ThemeProvider({
     return stored ?? "comfortable";
   });
 
+  // Hydrate from Rust SettingsStore on mount
+  React.useEffect(() => {
+    getSettings()
+      .then((settings) => {
+        setThemeState(settings.theme as ThemePreference);
+        setAccentColorState(settings.accentColor);
+        setDensityState(settings.density as Density);
+
+        // Sync localStorage so subsequent fast renders are up-to-date
+        localStorage.setItem("goose-theme", settings.theme);
+        localStorage.setItem("goose-accent-color", settings.accentColor);
+        localStorage.setItem("goose-density", settings.density);
+      })
+      .catch(() => {
+        // Tauri not ready yet — keep localStorage values
+      });
+  }, []);
+
   const setTheme = React.useCallback((newTheme: ThemePreference) => {
     localStorage.setItem("goose-theme", newTheme);
     setThemeState(newTheme);
+    updateSettings({ theme: newTheme }).catch(() => {});
   }, []);
 
   const setAccentColor = React.useCallback((color: string) => {
     localStorage.setItem("goose-accent-color", color);
     setAccentColorState(color);
+    updateSettings({ accentColor: color }).catch(() => {});
   }, []);
 
   const setDensity = React.useCallback((d: Density) => {
     localStorage.setItem("goose-density", d);
     setDensityState(d);
+    updateSettings({ density: d }).catch(() => {});
   }, []);
 
   React.useEffect(() => {
