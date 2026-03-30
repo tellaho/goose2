@@ -1,18 +1,9 @@
 import { useState, useMemo, useCallback } from "react";
-import {
-  Bot,
-  Plus,
-  Circle,
-  Upload,
-  FileText,
-  ChevronRight,
-  Trash2,
-} from "lucide-react";
+import { Bot, Plus, Circle, Upload } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { SearchBar } from "@/shared/ui/SearchBar";
 import { Button } from "@/shared/ui/button";
 import { useAgentStore } from "@/features/agents/stores/agentStore";
-import { useAgentConfigStore } from "@/stores/agentConfigStore";
 import { PersonaGallery } from "@/features/agents/ui/PersonaGallery";
 import { PersonaEditor } from "@/features/agents/ui/PersonaEditor";
 import { BatchImportDialog } from "@/features/agents/ui/BatchImportDialog";
@@ -66,72 +57,6 @@ function AgentRow({ agent }: { agent: Agent }) {
   );
 }
 
-function AgentConfigRow({
-  config,
-  onDelete,
-}: {
-  config: {
-    id: string;
-    name: string;
-    description?: string;
-    instructions: string;
-    filePath: string;
-    source: string;
-  };
-  onDelete: (id: string) => Promise<void>;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const filename = config.filePath.split("/").pop() ?? config.filePath;
-
-  return (
-    <li className="rounded-lg border border-border transition-colors hover:bg-background-secondary/50">
-      <div className="flex items-center justify-between px-4 py-3">
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          className="flex items-center gap-3 min-w-0 flex-1 text-left"
-        >
-          <ChevronRight
-            className={cn(
-              "h-4 w-4 shrink-0 text-foreground-secondary transition-transform",
-              expanded && "rotate-90",
-            )}
-          />
-          <FileText className="h-5 w-5 shrink-0 text-foreground-secondary" />
-          <div className="min-w-0">
-            <p className="text-sm font-medium truncate">{config.name}</p>
-            {config.description && (
-              <p className="text-xs text-foreground-secondary truncate">
-                {config.description}
-              </p>
-            )}
-          </div>
-        </button>
-        <div className="flex items-center gap-2 shrink-0 ml-3">
-          <span className="inline-flex items-center rounded-md bg-background-secondary px-2 py-0.5 text-[10px] text-foreground-secondary">
-            {filename}
-          </span>
-          <button
-            type="button"
-            aria-label={`Delete ${config.name}`}
-            onClick={() => onDelete(config.id)}
-            className="rounded-md p-1 text-foreground-secondary/60 hover:bg-background-secondary hover:text-foreground-danger transition-colors"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      </div>
-      {expanded && (
-        <div className="border-t border-border px-4 py-3">
-          <pre className="text-xs text-foreground-secondary whitespace-pre-wrap break-words leading-relaxed max-h-48 overflow-y-auto">
-            {config.instructions}
-          </pre>
-        </div>
-      )}
-    </li>
-  );
-}
-
 export function AgentsView() {
   const [search, setSearch] = useState("");
 
@@ -146,11 +71,6 @@ export function AgentsView() {
   const addPersona = useAgentStore((s) => s.addPersona);
   const updatePersona = useAgentStore((s) => s.updatePersona);
   const removePersona = useAgentStore((s) => s.removePersona);
-
-  // Agent configs from disk
-  const agentConfigs = useAgentConfigStore((s) => s.agents);
-  const agentConfigsLoading = useAgentConfigStore((s) => s.loading);
-  const deleteAgentConfig = useAgentConfigStore((s) => s.deleteAgent);
 
   // Import state
   const [batchImportOpen, setBatchImportOpen] = useState(false);
@@ -179,16 +99,6 @@ export function AgentsView() {
     [agents, lowerSearch],
   );
 
-  const filteredConfigs = useMemo(
-    () =>
-      agentConfigs.filter(
-        (c) =>
-          c.name.toLowerCase().includes(lowerSearch) ||
-          (c.description?.toLowerCase().includes(lowerSearch) ?? false),
-      ),
-    [agentConfigs, lowerSearch],
-  );
-
   // ── Import handling ──
 
   const handleFilesSelected = useCallback(
@@ -197,7 +107,6 @@ export function AgentsView() {
         try {
           const result = await parsePersonaFiles(file.data, file.filename);
           if (result.personas.length === 1 && result.skipped.length === 0) {
-            // Single persona — import directly
             const p = result.personas[0];
             const created = await createPersona({
               displayName: p.displayName,
@@ -208,7 +117,6 @@ export function AgentsView() {
             });
             addPersona(created);
           } else {
-            // Multiple or with skipped — show batch dialog
             setImportPersonas(result.personas);
             setImportSkipped(result.skipped);
             setBatchImportOpen(true);
@@ -322,7 +230,7 @@ export function AgentsView() {
           <div>
             <h1 className="text-lg font-semibold">Agents</h1>
             <p className="text-xs text-foreground-secondary">
-              Custom agent configurations for specific workflows
+              Custom agent personas for specific workflows
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -360,7 +268,7 @@ export function AgentsView() {
         <SearchBar
           value={search}
           onChange={setSearch}
-          placeholder="Search personas, agents, and configs..."
+          placeholder="Search personas and agents..."
         />
 
         {/* Personas section */}
@@ -378,41 +286,6 @@ export function AgentsView() {
             onCreatePersona={() => openPersonaEditor()}
             isLoading={personasLoading}
           />
-        </section>
-
-        {/* Agent Configs from disk */}
-        <section aria-labelledby="configs-heading">
-          <div className="flex items-center justify-between mb-3">
-            <h2 id="configs-heading" className="text-sm font-semibold">
-              Agent Configs
-            </h2>
-            <span className="text-xs text-foreground-secondary">
-              from ~/.goose/agents/
-            </span>
-          </div>
-
-          {agentConfigsLoading ? (
-            <p className="text-xs text-foreground-secondary py-4 text-center">
-              Loading...
-            </p>
-          ) : filteredConfigs.length === 0 ? (
-            <p className="text-xs text-foreground-secondary py-4 text-center">
-              No agent configs found. Add .md files to ~/.goose/agents/
-            </p>
-          ) : (
-            <ul
-              className="space-y-2"
-              aria-label="Agent configurations from disk"
-            >
-              {filteredConfigs.map((config) => (
-                <AgentConfigRow
-                  key={config.id}
-                  config={config}
-                  onDelete={deleteAgentConfig}
-                />
-              ))}
-            </ul>
-          )}
         </section>
 
         {/* Active Agents section */}

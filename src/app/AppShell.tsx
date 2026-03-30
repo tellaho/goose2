@@ -12,6 +12,8 @@ import { useAgentStore } from "@/features/agents/stores/agentStore";
 import { useAgentConfigStore } from "@/stores/agentConfigStore";
 import { useSkillStore } from "@/stores/skillStore";
 import { listPersonas } from "@/shared/api/agents";
+import type { Persona } from "@/shared/types/agents";
+import type { AgentConfig } from "@/stores/agentConfigStore";
 import type { Tab } from "@/features/tabs/types";
 
 export type AppView = "home" | "chat" | "skills" | "agents";
@@ -31,13 +33,25 @@ export function AppShell({ children }: { children?: React.ReactNode }) {
   const loadAgentConfigs = useAgentConfigStore((s) => s.loadAgents);
   const loadSkills = useSkillStore((s) => s.loadSkills);
 
-  // Load personas, agent configs, and skills on startup
+  // Load personas, agent configs (merged as personas), and skills on startup
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally run only on mount to seed data once
   useEffect(() => {
-    listPersonas().then((personas) => {
-      agentStore.setPersonas(personas);
-    });
-    loadAgentConfigs();
+    Promise.all([listPersonas(), loadAgentConfigs()]).then(
+      ([personas, _configs]) => {
+        const agentConfigs = useAgentConfigStore.getState().agents;
+        const configPersonas: Persona[] = agentConfigs.map(
+          (c: AgentConfig) => ({
+            id: `agent-config-${c.id}`,
+            displayName: c.name,
+            systemPrompt: c.instructions,
+            isBuiltin: false,
+            createdAt: c.lastModified,
+            updatedAt: c.lastModified,
+          }),
+        );
+        agentStore.setPersonas([...personas, ...configPersonas]);
+      },
+    );
     loadSkills();
   }, []);
 
@@ -205,7 +219,7 @@ export function AppShell({ children }: { children?: React.ReactNode }) {
         </div>
 
         {/* Content area */}
-        <main className="min-h-0 min-w-0 flex-1">
+        <main className="min-h-0 min-w-0 flex-1 flex flex-col">
           {children ?? renderContent()}
         </main>
       </div>
