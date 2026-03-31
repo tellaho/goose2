@@ -8,6 +8,8 @@ const EXCEPTIONS = {
   // Ported from staged app — cohesive health-check module with many repetitive
   // per-dependency check functions that share the same structure.
   "src-tauri/src/commands/doctor.rs": { limit: 1000 },
+  // Vendored boss-ui shadcn sidebar component with many sub-components.
+  "src/shared/ui/sidebar.tsx": { limit: 800 },
 };
 
 const DIRS_TO_CHECK = [
