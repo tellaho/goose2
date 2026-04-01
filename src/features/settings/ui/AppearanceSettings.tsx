@@ -39,9 +39,7 @@ function SettingRow({
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium">{label}</p>
         {description && (
-          <p className="mt-0.5 text-xs text-foreground-secondary">
-            {description}
-          </p>
+          <p className="mt-0.5 text-xs text-text-muted">{description}</p>
         )}
       </div>
       <div className="flex-shrink-0">{children}</div>
@@ -56,7 +54,7 @@ export function AppearanceSettings() {
   return (
     <div>
       <h3 className="text-lg font-semibold">Appearance</h3>
-      <p className="mt-1 text-sm text-foreground-secondary">
+      <p className="mt-1 text-sm text-text-muted">
         Customize the look and feel of Goose
       </p>
 
@@ -66,7 +64,7 @@ export function AppearanceSettings() {
         label="Theme"
         description="Choose your preferred color scheme"
       >
-        <div className="flex gap-1 rounded-lg bg-background-secondary p-1">
+        <div className="flex gap-1 rounded-lg bg-background-alt p-1">
           {THEME_OPTIONS.map((option) => (
             <button
               type="button"
@@ -75,8 +73,8 @@ export function AppearanceSettings() {
               className={cn(
                 "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors",
                 theme === option.value
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-foreground-secondary hover:text-foreground",
+                  ? "bg-background-default text-text-default shadow-mini"
+                  : "text-text-muted hover:text-text-default",
               )}
             >
               <option.icon className="h-3.5 w-3.5" />
@@ -99,7 +97,7 @@ export function AppearanceSettings() {
               className={cn(
                 "flex h-7 w-7 items-center justify-center rounded-full transition-transform hover:scale-110",
                 accentColor === color.value &&
-                  "ring-2 ring-ring ring-offset-2 ring-offset-background",
+                  "ring-2 ring-ring ring-offset-2 ring-offset-background-default",
               )}
               style={{ backgroundColor: color.value }}
             >
@@ -117,7 +115,7 @@ export function AppearanceSettings() {
         label="Interface Density"
         description="Adjust the spacing of UI elements"
       >
-        <div className="flex gap-1 rounded-lg bg-background-secondary p-1">
+        <div className="flex gap-1 rounded-lg bg-background-alt p-1">
           {DENSITY_OPTIONS.map((option) => (
             <button
               type="button"
@@ -126,8 +124,8 @@ export function AppearanceSettings() {
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm transition-colors",
                 density === option.value
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-foreground-secondary hover:text-foreground",
+                  ? "bg-background-default text-text-default shadow-mini"
+                  : "text-text-muted hover:text-text-default",
               )}
             >
               {option.label}

@@ -23,9 +23,9 @@ const STATUS_ICON = {
 } as const;
 
 const STATUS_COLOR = {
-  pass: "text-foreground-success",
-  warn: "text-foreground-warning",
-  fail: "text-foreground-danger",
+  pass: "text-text-success",
+  warn: "text-text-warning",
+  fail: "text-text-danger",
 } as const;
 
 export function DoctorCheckRow({ check, onFixed }: DoctorCheckRowProps) {
@@ -52,23 +52,23 @@ export function DoctorCheckRow({ check, onFixed }: DoctorCheckRowProps) {
 
   return (
     <>
-      <div className="flex items-center gap-2.5 rounded-lg bg-background px-3.5 py-2.5">
+      <div className="flex items-center gap-2.5 rounded-lg bg-background-default px-3.5 py-2.5">
         <Icon
           className={cn("h-4 w-4 flex-shrink-0", STATUS_COLOR[check.status])}
         />
 
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="text-sm font-medium">{check.label}</span>
-          <span className="break-words text-xs text-foreground-secondary">
+          <span className="break-words text-xs text-text-muted">
             {check.message}
           </span>
           {check.path && (
-            <span className="break-words font-mono text-[10px] text-foreground-tertiary">
+            <span className="break-words font-mono text-[10px] text-text-alt">
               {check.path}
             </span>
           )}
           {check.bridgePath && (
-            <span className="break-words font-mono text-[10px] text-foreground-tertiary">
+            <span className="break-words font-mono text-[10px] text-text-alt">
               {check.bridgePath}
             </span>
           )}
@@ -82,7 +82,7 @@ export function DoctorCheckRow({ check, onFixed }: DoctorCheckRowProps) {
               setFixing(false);
               setShowFixDialog(true);
             }}
-            className="flex flex-shrink-0 items-center gap-1 rounded-md border border-border px-2 py-1 text-xs text-foreground-secondary transition-colors hover:bg-background-secondary hover:text-foreground"
+            className="flex flex-shrink-0 items-center gap-1 rounded-md border border-border-default px-2 py-1 text-xs text-text-muted transition-colors hover:bg-background-alt hover:text-text-default"
           >
             <Wrench className="h-3.5 w-3.5" />
             Fix
@@ -96,7 +96,7 @@ export function DoctorCheckRow({ check, onFixed }: DoctorCheckRowProps) {
               if (check.fixUrl) void openUrl(check.fixUrl);
             }}
             aria-label="Open fix URL"
-            className="flex flex-shrink-0 items-center justify-center rounded-md p-1 text-foreground-secondary transition-colors hover:bg-background-secondary hover:text-foreground"
+            className="flex flex-shrink-0 items-center justify-center rounded-md p-1 text-text-muted transition-colors hover:bg-background-alt hover:text-text-default"
           >
             <ExternalLink className="h-3.5 w-3.5" />
           </button>
@@ -120,20 +120,18 @@ export function DoctorCheckRow({ check, onFixed }: DoctorCheckRowProps) {
             }}
             aria-hidden="true"
           />
-          <div className="relative z-10 w-full max-w-sm rounded-xl border border-border bg-background p-6 shadow-xl space-y-4">
+          <div className="relative z-10 w-full max-w-sm rounded-xl border border-border-default bg-background-default p-6 shadow-xl space-y-4">
             <h3 className="text-sm font-semibold">Run fix command?</h3>
-            <p className="break-all font-mono text-xs text-foreground-secondary">
+            <p className="break-all font-mono text-xs text-text-muted">
               {check.fixCommand}
             </p>
-            {fixError && (
-              <p className="text-xs text-foreground-danger">{fixError}</p>
-            )}
+            {fixError && <p className="text-xs text-text-danger">{fixError}</p>}
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 disabled={fixing}
                 onClick={() => setShowFixDialog(false)}
-                className="px-3 py-1.5 text-xs font-medium rounded-md hover:bg-background-secondary transition-colors disabled:opacity-50"
+                className="px-3 py-1.5 text-xs font-medium rounded-md hover:bg-background-alt transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -141,7 +139,7 @@ export function DoctorCheckRow({ check, onFixed }: DoctorCheckRowProps) {
                 type="button"
                 disabled={fixing}
                 onClick={confirmFix}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-background-secondary transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-border-default hover:bg-background-alt transition-colors disabled:opacity-50"
               >
                 {fixing && <Loader2 className="h-3 w-3 animate-spin" />}
                 {fixing ? "Running" : fixError ? "Retry" : "Run"}

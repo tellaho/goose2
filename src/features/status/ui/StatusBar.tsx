@@ -20,8 +20,8 @@ export function StatusBar({
   return (
     <div
       className={cn(
-        "flex h-6 w-full items-center justify-between border-t border-border",
-        "bg-background/80 px-3 text-xs text-foreground-secondary",
+        "flex h-6 w-full items-center justify-between border-t border-border-default",
+        "bg-background-default/80 px-3 text-xs text-text-muted",
       )}
     >
       <span>{modelName}</span>

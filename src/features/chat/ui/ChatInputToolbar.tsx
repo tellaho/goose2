@@ -97,7 +97,7 @@ export function ChatInputToolbar({
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] text-foreground-tertiary transition-colors hover:bg-background-tertiary hover:text-foreground"
+                className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] text-text-alt transition-colors hover:bg-background-muted hover:text-text-default"
                 aria-label="Override provider"
               >
                 {!isCompact && (
@@ -120,7 +120,7 @@ export function ChatInputToolbar({
                 >
                   <span className="text-sm font-medium">{provider.label}</span>
                   {provider.id === selectedProvider && (
-                    <Check className="h-4 w-4 shrink-0 text-foreground-secondary" />
+                    <Check className="h-4 w-4 shrink-0 text-text-muted" />
                   )}
                 </DropdownMenuItem>
               ))}
@@ -133,7 +133,7 @@ export function ChatInputToolbar({
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs text-foreground-tertiary transition-colors hover:bg-background-tertiary hover:text-foreground"
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs text-text-alt transition-colors hover:bg-background-muted hover:text-text-default"
                 aria-label="Select model"
               >
                 {!isCompact && <span>{currentModel}</span>}
@@ -157,13 +157,13 @@ export function ChatInputToolbar({
                       {model.displayName ?? model.name}
                     </span>
                     {model.provider && (
-                      <span className="text-xs text-foreground-tertiary">
+                      <span className="text-xs text-text-alt">
                         {model.provider}
                       </span>
                     )}
                   </div>
                   {model.id === currentModel && (
-                    <Check className="h-4 w-4 shrink-0 text-foreground-secondary" />
+                    <Check className="h-4 w-4 shrink-0 text-text-muted" />
                   )}
                 </DropdownMenuItem>
               ))}
@@ -177,7 +177,7 @@ export function ChatInputToolbar({
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs text-foreground-tertiary transition-colors hover:bg-background-tertiary hover:text-foreground"
+              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs text-text-alt transition-colors hover:bg-background-muted hover:text-text-default"
               aria-label="Select folder"
             >
               <FolderOpen className="h-3.5 w-3.5" />
@@ -197,13 +197,13 @@ export function ChatInputToolbar({
                 >
                   <span className="text-sm">{f.name}</span>
                   {f.id === folder && (
-                    <Check className="h-4 w-4 shrink-0 text-foreground-secondary" />
+                    <Check className="h-4 w-4 shrink-0 text-text-muted" />
                   )}
                 </DropdownMenuItem>
               ))
             ) : (
               <DropdownMenuItem disabled>
-                <span className="text-xs text-foreground-tertiary">
+                <span className="text-xs text-text-alt">
                   No folders available
                 </span>
               </DropdownMenuItem>
@@ -219,7 +219,7 @@ export function ChatInputToolbar({
             <TooltipTrigger asChild>
               <button
                 type="button"
-                className="rounded-lg p-2 text-foreground-tertiary transition-colors hover:bg-background-tertiary hover:text-foreground"
+                className="rounded-lg p-2 text-text-alt transition-colors hover:bg-background-muted hover:text-text-default"
                 aria-label="Context usage"
               >
                 <ContextRing tokens={contextTokens} limit={contextLimit} />
@@ -236,7 +236,7 @@ export function ChatInputToolbar({
           <TooltipTrigger asChild>
             <button
               type="button"
-              className="cursor-not-allowed rounded-lg p-2 text-foreground-tertiary/50 transition-colors"
+              className="cursor-not-allowed rounded-lg p-2 text-text-alt/50 transition-colors"
               disabled
               aria-label="Voice input (coming soon)"
             >
@@ -250,7 +250,7 @@ export function ChatInputToolbar({
           <TooltipTrigger asChild>
             <button
               type="button"
-              className="rounded-lg p-2 text-foreground-tertiary transition-colors hover:bg-background-tertiary hover:text-foreground"
+              className="rounded-lg p-2 text-text-alt transition-colors hover:bg-background-muted hover:text-text-default"
               aria-label="Attach file"
             >
               <Paperclip className="h-3.5 w-3.5" />
@@ -263,7 +263,7 @@ export function ChatInputToolbar({
           <button
             type="button"
             onClick={onStop}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-background-danger/10 text-foreground-danger transition-colors hover:bg-background-danger/20"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-background-danger/10 text-text-danger transition-colors hover:bg-background-danger/20"
             aria-label="Stop generation"
           >
             <Square className="h-3.5 w-3.5" />
@@ -277,7 +277,7 @@ export function ChatInputToolbar({
               "flex h-8 w-8 items-center justify-center rounded-full transition-colors",
               canSend
                 ? "bg-foreground text-background-primary hover:opacity-90"
-                : "cursor-default bg-foreground/10 text-foreground-tertiary",
+                : "cursor-default bg-text-default/10 text-text-alt",
             )}
             aria-label="Send message"
           >

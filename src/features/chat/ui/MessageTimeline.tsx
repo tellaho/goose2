@@ -78,10 +78,10 @@ export function MessageTimeline({
     return (
       <div className={cn("flex flex-1 items-center justify-center", className)}>
         <div className="text-center">
-          <p className="text-lg font-medium text-foreground-secondary">
+          <p className="text-lg font-medium text-text-muted">
             Start a conversation
           </p>
-          <p className="mt-1 text-sm text-foreground-tertiary">
+          <p className="mt-1 text-sm text-text-alt">
             Send a message to get started
           </p>
         </div>
@@ -109,7 +109,7 @@ export function MessageTimeline({
               {showDateSeparator && (
                 <div className="my-4 flex items-center gap-3 px-4">
                   <div className="h-px flex-1 bg-border-secondary" />
-                  <span className="text-[11px] font-medium text-foreground-tertiary">
+                  <span className="text-[11px] font-medium text-text-alt">
                     {formatDateSeparator(message.created)}
                   </span>
                   <div className="h-px flex-1 bg-border-secondary" />

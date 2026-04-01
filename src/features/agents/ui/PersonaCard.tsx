@@ -52,11 +52,11 @@ export function PersonaCard({
       tabIndex={0}
       className={cn(
         "group relative flex flex-col items-center gap-3 rounded-xl border p-5 cursor-pointer",
-        "bg-background transition-all duration-200 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2",
-        "hover:shadow-md hover:-translate-y-0.5",
+        "bg-background-default transition-all duration-200 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2",
+        "hover:shadow-card hover:-translate-y-0.5",
         isActive
-          ? "border-border-primary ring-1 ring-ring"
-          : "border-border hover:border-border-primary/50",
+          ? "border-border-default ring-1 ring-ring"
+          : "border-border-default hover:border-border-default/50",
       )}
     >
       {/* Dropdown trigger */}
@@ -71,8 +71,8 @@ export function PersonaCard({
             setMenuOpen((prev) => !prev);
           }}
           className={cn(
-            "rounded-md p-1 text-foreground-secondary/60 transition-opacity",
-            "hover:bg-background-secondary hover:text-foreground",
+            "rounded-md p-1 text-text-muted/60 transition-opacity",
+            "hover:bg-background-alt hover:text-text-default",
             menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100",
           )}
         >
@@ -82,7 +82,7 @@ export function PersonaCard({
         {menuOpen && (
           <div
             role="menu"
-            className="absolute right-0 top-full z-10 mt-1 w-36 rounded-lg border border-border bg-background py-1 shadow-lg"
+            className="absolute right-0 top-full z-10 mt-1 w-36 rounded-lg border border-border-default bg-background-default py-1 shadow-elevated"
           >
             <button
               type="button"
@@ -92,7 +92,7 @@ export function PersonaCard({
                 setMenuOpen(false);
                 onEdit?.(persona);
               }}
-              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-secondary transition-colors"
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-alt transition-colors"
             >
               <Pencil className="h-3.5 w-3.5" />
               Edit
@@ -105,7 +105,7 @@ export function PersonaCard({
                 setMenuOpen(false);
                 onDuplicate?.(persona);
               }}
-              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-secondary transition-colors"
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-alt transition-colors"
             >
               <Copy className="h-3.5 w-3.5" />
               Duplicate
@@ -118,7 +118,7 @@ export function PersonaCard({
                 setMenuOpen(false);
                 onExport?.(persona);
               }}
-              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-secondary transition-colors"
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-alt transition-colors"
             >
               <Download className="h-3.5 w-3.5" />
               Export
@@ -132,7 +132,7 @@ export function PersonaCard({
                   setMenuOpen(false);
                   onDelete?.(persona);
                 }}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-foreground-danger hover:bg-background-secondary transition-colors"
+                className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-text-danger hover:bg-background-alt transition-colors"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete
@@ -152,7 +152,7 @@ export function PersonaCard({
       ) : (
         <div
           aria-hidden="true"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-background-secondary text-sm font-semibold text-foreground-secondary"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-background-alt text-sm font-semibold text-text-muted"
         >
           {initials}
         </div>
@@ -165,19 +165,19 @@ export function PersonaCard({
 
       {/* Built-in badge */}
       {persona.isBuiltin && (
-        <span className="inline-flex items-center rounded-full bg-background-secondary px-2 py-0.5 text-[10px] font-medium text-foreground-secondary">
+        <span className="inline-flex items-center rounded-full bg-background-alt px-2 py-0.5 text-[10px] font-medium text-text-muted">
           Built-in
         </span>
       )}
 
       {/* System prompt preview */}
-      <p className="text-xs text-foreground-secondary/70 text-center line-clamp-2 w-full">
+      <p className="text-xs text-text-muted/70 text-center line-clamp-2 w-full">
         {persona.systemPrompt}
       </p>
 
       {/* Provider/model badge */}
       {(persona.provider || persona.model) && (
-        <span className="inline-flex items-center gap-1 rounded-md bg-background-secondary px-2 py-0.5 text-[10px] text-foreground-secondary">
+        <span className="inline-flex items-center gap-1 rounded-md bg-background-alt px-2 py-0.5 text-[10px] text-text-muted">
           {persona.provider && <span>{persona.provider}</span>}
           {persona.provider && persona.model && (
             <span aria-hidden="true">/</span>

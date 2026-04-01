@@ -101,7 +101,7 @@ export function DoctorSettings() {
       <div className="flex items-start justify-between gap-4 pr-8">
         <div>
           <h3 className="text-lg font-semibold">Doctor</h3>
-          <p className="mt-1 text-sm text-foreground-secondary">
+          <p className="mt-1 text-sm text-text-muted">
             Verify required tools and agent availability for Goose.
           </p>
         </div>
@@ -111,7 +111,7 @@ export function DoctorSettings() {
             <button
               type="button"
               onClick={copyDebugInfo}
-              className="flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground-secondary transition-colors hover:bg-background-secondary hover:text-foreground"
+              className="flex items-center gap-1.5 rounded-md border border-border-default px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:bg-background-alt hover:text-text-default"
             >
               {copied ? (
                 <Check className="h-3.5 w-3.5" />
@@ -126,7 +126,7 @@ export function DoctorSettings() {
             <button
               type="button"
               onClick={runChecksAndRefresh}
-              className="flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground-secondary transition-colors hover:bg-background-secondary hover:text-foreground"
+              className="flex items-center gap-1.5 rounded-md border border-border-default px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:bg-background-alt hover:text-text-default"
             >
               <RefreshCw className="h-3.5 w-3.5" />
               Re-run
@@ -138,14 +138,14 @@ export function DoctorSettings() {
       <div className="my-4 border-t" />
 
       {loading ? (
-        <div className="flex min-h-[160px] items-center justify-center gap-2 text-sm text-foreground-secondary">
+        <div className="flex min-h-[160px] items-center justify-center gap-2 text-sm text-text-muted">
           <Loader2 className="h-5 w-5 animate-spin" />
           Running checks...
         </div>
       ) : report ? (
         <div className="space-y-6">
           <div className="mx-auto w-full max-w-xl space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-foreground-tertiary">
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-text-alt">
               Tools
             </h4>
             <div className="space-y-2">
@@ -161,7 +161,7 @@ export function DoctorSettings() {
 
           {agentChecks.length > 0 && (
             <div className="mx-auto w-full max-w-xl space-y-2">
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-foreground-tertiary">
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-text-alt">
                 Agents
               </h4>
               <div className="space-y-2">
@@ -177,7 +177,7 @@ export function DoctorSettings() {
           )}
         </div>
       ) : (
-        <div className="flex min-h-[160px] items-center justify-center text-sm text-foreground-secondary">
+        <div className="flex min-h-[160px] items-center justify-center text-sm text-text-muted">
           No checks are available yet.
         </div>
       )}

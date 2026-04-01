@@ -178,13 +178,13 @@ export function CreateProjectDialog({
       {/* Panel */}
       <div
         className={cn(
-          "relative z-10 w-full max-w-lg rounded-xl border border-border bg-background shadow-xl",
+          "relative z-10 w-full max-w-lg rounded-xl border border-border-default bg-background-default shadow-xl",
           "max-h-[85vh] flex flex-col",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95",
         )}
       >
         {/* Header */}
-        <div className="shrink-0 flex items-center justify-between border-b border-border px-5 py-4">
+        <div className="shrink-0 flex items-center justify-between border-b border-border-default px-5 py-4">
           <h2 className="text-sm font-semibold">
             {isEditing ? "Edit Project" : "New Project"}
           </h2>
@@ -192,7 +192,7 @@ export function CreateProjectDialog({
             type="button"
             aria-label="Close"
             onClick={handleClose}
-            className="rounded-md p-1 text-foreground-secondary hover:bg-background-secondary transition-colors"
+            className="rounded-md p-1 text-text-muted hover:bg-background-alt transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -206,8 +206,8 @@ export function CreateProjectDialog({
         >
           {/* Name */}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
-              Name <span className="text-foreground-danger">*</span>
+            <span className="text-xs font-medium text-text-muted">
+              Name <span className="text-text-danger">*</span>
             </span>
             <input
               type="text"
@@ -218,8 +218,8 @@ export function CreateProjectDialog({
               }}
               placeholder="My Project"
               className={cn(
-                "w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm",
-                "placeholder:text-foreground-secondary/40",
+                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
+                "placeholder:text-text-muted/40",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
               )}
             />
@@ -227,17 +227,15 @@ export function CreateProjectDialog({
 
           {/* Prompt */}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
-              Prompt
-            </span>
+            <span className="text-xs font-medium text-text-muted">Prompt</span>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={8}
               placeholder="System prompt or context for agents working in this project..."
               className={cn(
-                "w-full resize-y rounded-lg border border-border bg-background-secondary px-3 py-2 text-xs font-mono leading-relaxed",
-                "placeholder:text-foreground-secondary/40",
+                "w-full resize-y rounded-lg border border-border-default bg-background-alt px-3 py-2 text-xs font-mono leading-relaxed",
+                "placeholder:text-text-muted/40",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
               )}
             />
@@ -245,9 +243,7 @@ export function CreateProjectDialog({
 
           {/* Color */}
           <div className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
-              Color
-            </span>
+            <span className="text-xs font-medium text-text-muted">Color</span>
             <div className="flex flex-wrap gap-1.5 pt-1">
               {COLOR_OPTIONS.map((c) => (
                 <button
@@ -269,13 +265,13 @@ export function CreateProjectDialog({
 
           {/* Provider */}
           <label className="block space-y-1.5">
-            <span className="text-xs font-medium text-foreground-secondary">
+            <span className="text-xs font-medium text-text-muted">
               Provider
             </span>
             <select
               value={preferredProvider ?? ""}
               onChange={(e) => setPreferredProvider(e.target.value || null)}
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
+              className="w-full rounded-md border border-border-default bg-background-default px-3 py-2 text-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
             >
               <option value="">None (use default)</option>
               {acpProviders.map((p) => (
@@ -288,7 +284,7 @@ export function CreateProjectDialog({
 
           {/* Working Directory */}
           <label className="block space-y-1.5">
-            <span className="text-xs font-medium text-foreground-secondary">
+            <span className="text-xs font-medium text-text-muted">
               Working Directory
             </span>
             <div className="flex gap-2">
@@ -297,12 +293,12 @@ export function CreateProjectDialog({
                 value={workingDir ?? ""}
                 onChange={(e) => setWorkingDir(e.target.value || null)}
                 placeholder="/path/to/project"
-                className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-foreground-tertiary focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
+                className="flex-1 rounded-md border border-border-default bg-background-default px-3 py-2 text-sm placeholder:text-text-alt focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
               />
               <button
                 type="button"
                 onClick={handleBrowseFolder}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-border hover:bg-background-tertiary transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-border-default hover:bg-background-muted transition-colors"
               >
                 <FolderOpen className="w-3.5 h-3.5" />
                 Browse
@@ -316,19 +312,19 @@ export function CreateProjectDialog({
               type="checkbox"
               checked={useWorktrees}
               onChange={(e) => setUseWorktrees(e.target.checked)}
-              className="h-4 w-4 rounded border-border accent-foreground"
+              className="h-4 w-4 rounded border-border-default accent-foreground"
             />
-            <span className="text-xs font-medium text-foreground-secondary">
+            <span className="text-xs font-medium text-text-muted">
               Use git worktrees for branch isolation
             </span>
           </label>
 
           {/* Error */}
-          {error && <p className="text-xs text-foreground-danger">{error}</p>}
+          {error && <p className="text-xs text-text-danger">{error}</p>}
         </form>
 
         {/* Footer */}
-        <div className="shrink-0 border-t border-border px-5 py-4 flex items-center justify-end gap-2">
+        <div className="shrink-0 border-t border-border-default px-5 py-4 flex items-center justify-end gap-2">
           <Button
             type="button"
             variant="ghost"

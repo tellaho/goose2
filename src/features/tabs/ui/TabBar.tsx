@@ -22,12 +22,12 @@ export function TabBar({
   return (
     <div
       data-tauri-drag-region
-      className="flex h-10 w-full items-center border-b border-border bg-background pl-20"
+      className="flex h-10 w-full items-center border-b border-border-default bg-background-default pl-20"
     >
       <button
         type="button"
         onClick={onHomeClick}
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-foreground-secondary transition-colors hover:bg-background-secondary/50 hover:text-foreground"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-background-alt/50 hover:text-text-default"
         aria-label="Home"
       >
         <Home className="h-4 w-4" />
@@ -53,8 +53,8 @@ export function TabBar({
             className={cn(
               "group flex h-7 cursor-pointer items-center gap-1.5 rounded-md pl-3 pr-1.5 text-xs transition-colors",
               tab.id === activeTabId
-                ? "bg-background-secondary text-foreground"
-                : "text-foreground-secondary hover:bg-background-secondary/50 hover:text-foreground",
+                ? "bg-background-alt text-text-default"
+                : "text-text-muted hover:bg-background-alt/50 hover:text-text-default",
             )}
           >
             <span className="truncate">{tab.title}</span>
@@ -66,7 +66,7 @@ export function TabBar({
                 e.stopPropagation();
                 onTabClose(tab.id);
               }}
-              className="flex h-4 w-4 shrink-0 items-center justify-center rounded opacity-0 transition-opacity hover:bg-background-secondary group-hover:opacity-100"
+              className="flex h-4 w-4 shrink-0 items-center justify-center rounded opacity-0 transition-opacity hover:bg-background-alt group-hover:opacity-100"
             >
               <X className="h-3 w-3" />
             </span>
@@ -77,7 +77,7 @@ export function TabBar({
       <button
         type="button"
         onClick={onNewTab}
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-foreground-secondary transition-colors hover:bg-background-secondary/50 hover:text-foreground"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-background-alt/50 hover:text-text-default"
         aria-label="New tab"
       >
         <Plus className="h-4 w-4" />

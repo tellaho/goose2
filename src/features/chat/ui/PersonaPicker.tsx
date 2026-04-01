@@ -50,7 +50,7 @@ export function PersonaPicker({
         <button
           type="button"
           className={cn(
-            "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-background-tertiary",
+            "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-text-default transition-colors hover:bg-background-muted",
             className,
           )}
           aria-label="Select persona"
@@ -63,7 +63,7 @@ export function PersonaPicker({
       <DropdownMenuContent align="start" className="w-64">
         {builtinPersonas.length > 0 && (
           <>
-            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-foreground-tertiary">
+            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-text-alt">
               Built-in
             </DropdownMenuLabel>
             {builtinPersonas.map((persona) => (
@@ -79,7 +79,7 @@ export function PersonaPicker({
         {customPersonas.length > 0 && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-foreground-tertiary">
+            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-text-alt">
               Custom
             </DropdownMenuLabel>
             {customPersonas.map((persona) => (
@@ -96,7 +96,7 @@ export function PersonaPicker({
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={onCreatePersona}>
-              <Plus className="mr-2 h-3.5 w-3.5 text-foreground-tertiary" />
+              <Plus className="mr-2 h-3.5 w-3.5 text-text-alt" />
               <span className="text-sm">Create persona...</span>
             </DropdownMenuItem>
           </>
@@ -130,13 +130,13 @@ function PersonaMenuItem({
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="text-sm font-medium">{persona.displayName}</span>
         {shortDesc && (
-          <span className="text-[11px] leading-snug text-foreground-tertiary">
+          <span className="text-[11px] leading-snug text-text-alt">
             {shortDesc}
           </span>
         )}
       </div>
       {isSelected && (
-        <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground-secondary" />
+        <Check className="mt-0.5 h-4 w-4 shrink-0 text-text-muted" />
       )}
     </DropdownMenuItem>
   );
@@ -170,7 +170,7 @@ function PersonaAvatar({
         dim,
         "flex items-center justify-center rounded-full",
         isBuiltin
-          ? "bg-foreground/10 text-foreground"
+          ? "bg-text-default/10 text-text-default"
           : "bg-accent/10 text-accent",
       )}
     >

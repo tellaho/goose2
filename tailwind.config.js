@@ -54,12 +54,6 @@ export default {
           success: "var(--background-success)",
           info: "var(--background-info)",
           warning: "var(--background-warning)",
-          /* old project compat */
-          primary: "var(--color-background-primary)",
-          secondary: "var(--color-background-secondary)",
-          tertiary: "var(--color-background-tertiary)",
-          ghost: "var(--color-background-ghost)",
-          disabled: "var(--color-background-disabled)",
         },
         /* ── Boss-UI semantic: text ── */
         text: {
@@ -74,19 +68,9 @@ export default {
           info: "var(--text-info)",
           warning: "var(--text-warning)",
         },
-        /* ── Foreground (old project + shadcn compat) ── */
+        /* ── Foreground (shadcn compat) ── */
         foreground: {
           DEFAULT: "var(--text-default)",
-          primary: "var(--color-text-primary)",
-          secondary: "var(--color-text-secondary)",
-          tertiary: "var(--color-text-tertiary)",
-          inverse: "var(--color-text-inverse)",
-          ghost: "var(--color-text-ghost)",
-          info: "var(--color-text-info)",
-          danger: "var(--color-text-danger)",
-          success: "var(--color-text-success)",
-          warning: "var(--color-text-warning)",
-          disabled: "var(--color-text-disabled)",
         },
         /* ── Boss-UI semantic: borders ── */
         border: {
@@ -102,23 +86,10 @@ export default {
           success: "var(--border-success)",
           info: "var(--border-info)",
           warning: "var(--border-warning)",
-          /* old project compat */
-          primary: "var(--color-border-primary)",
-          secondary: "var(--color-border-secondary)",
-          tertiary: "var(--color-border-tertiary)",
-          ghost: "var(--color-border-ghost)",
-          disabled: "var(--color-border-disabled)",
         },
         /* ── Ring ── */
         ring: {
           DEFAULT: "var(--ring)",
-          primary: "var(--color-ring-primary)",
-          secondary: "var(--color-ring-secondary)",
-          inverse: "var(--color-ring-inverse)",
-          info: "var(--color-ring-info)",
-          danger: "var(--color-ring-danger)",
-          success: "var(--color-ring-success)",
-          warning: "var(--color-ring-warning)",
         },
         /* ── Standard shadcn tokens ── */
         muted: {

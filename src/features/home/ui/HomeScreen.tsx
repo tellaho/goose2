@@ -27,10 +27,10 @@ function HomeClock() {
 
   return (
     <div className="mb-1 flex items-baseline gap-1.5 pl-4">
-      <span className="text-6xl font-light font-mono tracking-tight text-foreground">
+      <span className="text-6xl font-light font-mono tracking-tight text-text-default">
         {hours}:{minutes}
       </span>
-      <span className="text-lg text-foreground-secondary">{period}</span>
+      <span className="text-lg text-text-muted">{period}</span>
     </div>
   );
 }
@@ -146,7 +146,7 @@ function HomeInput({
 
   return (
     <div className="px-4 pb-6 pt-2">
-      <div className="relative mx-auto max-w-3xl rounded-2xl border border-border bg-background-secondary px-4 pb-3 pt-4 shadow-lg">
+      <div className="relative mx-auto max-w-3xl rounded-2xl border border-border-default bg-background-alt px-4 pb-3 pt-4 shadow-elevated">
         <MentionAutocomplete
           personas={personas}
           query={mentionQuery}
@@ -179,7 +179,7 @@ function HomeInput({
           onKeyDown={handleKeyDown}
           placeholder={`Ask ${personaName} anything... (type @ to mention)`}
           rows={1}
-          className="mb-3 min-h-[36px] max-h-[200px] w-full resize-none bg-transparent px-1 text-[14px] leading-relaxed placeholder:text-foreground-tertiary/60 focus:outline-none"
+          className="mb-3 min-h-[36px] max-h-[200px] w-full resize-none bg-transparent px-1 text-[14px] leading-relaxed placeholder:text-text-alt/60 focus:outline-none"
         />
         {/* Bottom bar */}
         <div className="flex items-center justify-between gap-2">
@@ -189,13 +189,13 @@ function HomeInput({
               selectedPersonaId={selectedPersonaId}
               onPersonaChange={onPersonaChange}
               onCreatePersona={onCreatePersona}
-              className="rounded-md border border-border px-2 py-0.5"
+              className="rounded-md border border-border-default px-2 py-0.5"
             />
           </div>
           <div className="flex items-center gap-1">
             <button
               type="button"
-              className="rounded-lg p-2 text-foreground-tertiary transition-colors hover:bg-background-tertiary hover:text-foreground"
+              className="rounded-lg p-2 text-text-alt transition-colors hover:bg-background-muted hover:text-text-default"
             >
               <Paperclip className="h-4 w-4" />
             </button>
@@ -207,7 +207,7 @@ function HomeInput({
                 "flex h-8 w-8 items-center justify-center rounded-full",
                 hasContent
                   ? "bg-foreground text-background-primary hover:opacity-90"
-                  : "cursor-default bg-foreground/10 text-foreground-tertiary",
+                  : "cursor-default bg-text-default/10 text-text-alt",
               )}
             >
               <ArrowUp className="h-4 w-4" />
@@ -215,7 +215,7 @@ function HomeInput({
           </div>
         </div>
       </div>
-      <p className="mt-2 text-center text-[10px] text-foreground-tertiary/40">
+      <p className="mt-2 text-center text-[10px] text-text-alt/40">
         ⏎ to send · ⇧⏎ for newline · @ to mention a persona
       </p>
     </div>
@@ -249,7 +249,7 @@ export function HomeScreen({ onStartChat }: HomeScreenProps) {
           <HomeClock />
 
           {/* Greeting */}
-          <p className="mb-6 pl-4 text-xl font-light text-foreground-secondary">
+          <p className="mb-6 pl-4 text-xl font-light text-text-muted">
             {greeting}
           </p>
 

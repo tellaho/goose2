@@ -22,12 +22,12 @@ function SkeletonCard() {
   return (
     <div
       aria-hidden="true"
-      className="flex flex-col items-center gap-3 rounded-xl border border-border p-5 motion-safe:animate-pulse"
+      className="flex flex-col items-center gap-3 rounded-xl border border-border-default p-5 motion-safe:animate-pulse"
     >
-      <div className="h-12 w-12 rounded-full bg-background-secondary" />
-      <div className="h-4 w-24 rounded bg-background-secondary" />
-      <div className="h-3 w-full rounded bg-background-secondary" />
-      <div className="h-3 w-3/4 rounded bg-background-secondary" />
+      <div className="h-12 w-12 rounded-full bg-background-alt" />
+      <div className="h-4 w-24 rounded bg-background-alt" />
+      <div className="h-3 w-full rounded bg-background-alt" />
+      <div className="h-3 w-3/4 rounded bg-background-alt" />
     </div>
   );
 }
@@ -96,19 +96,17 @@ export function PersonaGallery({
         {...dropHandlers}
         className={cn(
           "flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-5",
-          "text-foreground-secondary/60 transition-colors",
-          "hover:border-border-primary/50 hover:text-foreground-secondary hover:bg-background-secondary/50",
+          "text-text-muted/60 transition-colors",
+          "hover:border-border-default/50 hover:text-text-muted hover:bg-background-alt/50",
           isDragOver
-            ? "border-border-primary bg-background-secondary/50 text-foreground-secondary"
-            : "border-border",
+            ? "border-border-default bg-background-alt/50 text-text-muted"
+            : "border-border-default",
         )}
       >
         <Plus className="h-8 w-8" />
         <span className="text-sm font-medium">New Persona</span>
         {onImportFile && (
-          <span className="text-[11px] text-foreground-secondary/40">
-            or drop a file
-          </span>
+          <span className="text-[11px] text-text-muted/40">or drop a file</span>
         )}
       </button>
       {onImportFile && (

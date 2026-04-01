@@ -81,8 +81,8 @@ export function AgentConfig({
     >
       {/* Name */}
       <label className="block space-y-1">
-        <span className="text-xs font-medium text-foreground-secondary">
-          Name <span className="text-foreground-danger">*</span>
+        <span className="text-xs font-medium text-text-muted">
+          Name <span className="text-text-danger">*</span>
         </span>
         <input
           type="text"
@@ -90,19 +90,17 @@ export function AgentConfig({
           onChange={(e) => setName(e.target.value)}
           required
           placeholder="My Agent"
-          className="w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm placeholder:text-foreground-secondary/40 focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+          className="w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm placeholder:text-text-muted/40 focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
         />
       </label>
 
       {/* Persona selector */}
       <label className="block space-y-1">
-        <span className="text-xs font-medium text-foreground-secondary">
-          Persona
-        </span>
+        <span className="text-xs font-medium text-text-muted">Persona</span>
         <select
           value={personaId}
           onChange={(e) => setPersonaId(e.target.value)}
-          className="w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+          className="w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
         >
           <option value="">None</option>
           {personas.map((p) => (
@@ -116,10 +114,10 @@ export function AgentConfig({
 
       {/* Provider */}
       <label className="block space-y-1">
-        <span className="text-xs font-medium text-foreground-secondary">
+        <span className="text-xs font-medium text-text-muted">
           Provider
           {selectedPersona?.provider && (
-            <span className="ml-1 text-foreground-secondary/50">
+            <span className="ml-1 text-text-muted/50">
               (from persona: {selectedPersona.provider})
             </span>
           )}
@@ -127,7 +125,7 @@ export function AgentConfig({
         <select
           value={provider}
           onChange={(e) => setProvider(e.target.value as ProviderType)}
-          className="w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+          className="w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
         >
           {PROVIDER_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -139,10 +137,10 @@ export function AgentConfig({
 
       {/* Model override */}
       <label className="block space-y-1">
-        <span className="text-xs font-medium text-foreground-secondary">
+        <span className="text-xs font-medium text-text-muted">
           Model
           {selectedPersona?.model && (
-            <span className="ml-1 text-foreground-secondary/50">
+            <span className="ml-1 text-text-muted/50">
               (from persona: {selectedPersona.model})
             </span>
           )}
@@ -152,7 +150,7 @@ export function AgentConfig({
           value={model}
           onChange={(e) => setModel(e.target.value)}
           placeholder="e.g. claude-sonnet-4-20250514"
-          className="w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm placeholder:text-foreground-secondary/40 focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+          className="w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm placeholder:text-text-muted/40 focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
         />
       </label>
 
@@ -161,7 +159,7 @@ export function AgentConfig({
         <button
           type="button"
           onClick={() => setPromptExpanded((v) => !v)}
-          className="text-xs font-medium text-foreground-secondary hover:text-foreground transition-colors"
+          className="text-xs font-medium text-text-muted hover:text-text-default transition-colors"
         >
           System Prompt Override {promptExpanded ? "[-]" : "[+]"}
         </button>
@@ -171,7 +169,7 @@ export function AgentConfig({
             onChange={(e) => setSystemPrompt(e.target.value)}
             rows={5}
             placeholder="Override the persona system prompt..."
-            className="w-full resize-y rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm leading-relaxed placeholder:text-foreground-secondary/40 focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+            className="w-full resize-y rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm leading-relaxed placeholder:text-text-muted/40 focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
           />
         )}
       </div>

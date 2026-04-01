@@ -190,7 +190,7 @@ export function ChatInput({
     <TooltipProvider delayDuration={300}>
       <div className={cn("px-4 pb-6 pt-2", className)} ref={containerRef}>
         <div className="mx-auto max-w-3xl">
-          <div className="relative rounded-2xl border border-border bg-background-secondary px-4 pb-3 pt-4 shadow-lg">
+          <div className="relative rounded-2xl border border-border-default bg-background-alt px-4 pb-3 pt-4 shadow-elevated">
             <MentionAutocomplete
               personas={personas}
               query={mentionQuery}
@@ -225,7 +225,7 @@ export function ChatInput({
               placeholder={effectivePlaceholder}
               disabled={disabled || isStreaming}
               rows={1}
-              className="mb-3 min-h-[36px] max-h-[200px] w-full resize-none bg-transparent px-1 text-[14px] leading-relaxed text-foreground placeholder:text-foreground-tertiary/60 focus:outline-none disabled:opacity-60"
+              className="mb-3 min-h-[36px] max-h-[200px] w-full resize-none bg-transparent px-1 text-[14px] leading-relaxed text-text-default placeholder:text-text-alt/60 focus:outline-none disabled:opacity-60"
               aria-label="Chat message input"
             />
 

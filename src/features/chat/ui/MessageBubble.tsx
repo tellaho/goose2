@@ -38,7 +38,7 @@ function CopyButton({ text }: { text: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="rounded p-1 text-foreground-tertiary opacity-0 transition-opacity duration-150 hover:text-foreground-primary group-hover:opacity-100"
+      className="rounded p-1 text-text-alt opacity-0 transition-opacity duration-150 hover:text-text-default group-hover:opacity-100"
       aria-label={copied ? "Copied" : "Copy message"}
     >
       {copied ? <Check size={14} /> : <Copy size={14} />}
@@ -104,10 +104,7 @@ function renderContentBlock(content: MessageContent, index: number) {
     }
     case "redactedThinking":
       return (
-        <div
-          key={`redacted-${index}`}
-          className="text-xs italic text-foreground-tertiary"
-        >
+        <div key={`redacted-${index}`} className="text-xs italic text-text-alt">
           (thinking redacted)
         </div>
       );
@@ -116,7 +113,7 @@ function renderContentBlock(content: MessageContent, index: number) {
       return (
         <div
           key={`notification-${index}`}
-          className="rounded-md bg-background-tertiary p-2 text-xs text-foreground-secondary"
+          className="rounded-md bg-background-muted p-2 text-xs text-text-muted"
         >
           {sn.text}
         </div>
@@ -146,7 +143,7 @@ export function MessageBubble({
   if (role === "system") {
     return (
       <div className="flex justify-center px-4 py-2">
-        <div className="max-w-md rounded-full bg-background-tertiary px-3 py-1 text-center text-xs text-foreground-tertiary">
+        <div className="max-w-md rounded-full bg-background-muted px-3 py-1 text-center text-xs text-text-alt">
           {content.map((c, i) => renderContentBlock(c, i))}
         </div>
       </div>
@@ -166,15 +163,15 @@ export function MessageBubble({
     >
       {/* Avatar */}
       {isUser ? (
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background-tertiary">
-          <User size={14} className="text-foreground-secondary" />
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background-muted">
+          <User size={14} className="text-text-muted" />
         </div>
       ) : (
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background-tertiary">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background-muted">
           {agentAvatarUrl ? (
             <img src={agentAvatarUrl} alt="" className="h-7 w-7 rounded-full" />
           ) : (
-            <Bot size={14} className="text-foreground-secondary" />
+            <Bot size={14} className="text-text-muted" />
           )}
         </div>
       )}
@@ -188,7 +185,7 @@ export function MessageBubble({
       >
         {/* Agent name */}
         {!isUser && agentName && (
-          <span className="mb-0.5 text-xs font-medium text-foreground-secondary">
+          <span className="mb-0.5 text-xs font-medium text-text-muted">
             {agentName}
           </span>
         )}
@@ -200,7 +197,7 @@ export function MessageBubble({
           })}
           {isStreaming && (
             <span
-              className="inline-block animate-pulse text-foreground-tertiary"
+              className="inline-block animate-pulse text-text-alt"
               aria-hidden="true"
             >
               ▍
@@ -215,7 +212,7 @@ export function MessageBubble({
             <button
               type="button"
               onClick={onRetry}
-              className="rounded p-1 text-foreground-tertiary hover:text-foreground-primary"
+              className="rounded p-1 text-text-alt hover:text-text-default"
               aria-label="Retry"
             >
               <RotateCcw size={14} />
@@ -225,13 +222,13 @@ export function MessageBubble({
             <button
               type="button"
               onClick={onEdit}
-              className="rounded p-1 text-foreground-tertiary hover:text-foreground-primary"
+              className="rounded p-1 text-text-alt hover:text-text-default"
               aria-label="Edit message"
             >
               <Pencil size={14} />
             </button>
           )}
-          <span className="px-1 text-[10px] text-foreground-secondary">
+          <span className="px-1 text-[10px] text-text-muted">
             {new Date(created).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",

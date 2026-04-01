@@ -46,7 +46,7 @@ export function StreamingIndicator({
           )}
         />
       </div>
-      <span className="text-xs text-foreground-tertiary">
+      <span className="text-xs text-text-alt">
         {agentName} {labels[state] ?? "is thinking"}...
       </span>
     </div>

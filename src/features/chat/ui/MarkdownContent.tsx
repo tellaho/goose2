@@ -122,7 +122,7 @@ const MarkdownCode = memo(function MarkdownCode({
   ) : (
     <code
       {...props}
-      className="break-all whitespace-pre-wrap font-mono bg-background-tertiary rounded px-1 py-0.5 text-[13px]"
+      className="break-all whitespace-pre-wrap font-mono bg-background-muted rounded px-1 py-0.5 text-[13px]"
     >
       {children}
     </code>
@@ -141,9 +141,9 @@ export const MarkdownContent = memo(function MarkdownContent({
         prose-code:break-all prose-code:whitespace-pre-wrap prose-code:font-mono
         prose-a:break-all prose-a:text-accent prose-a:underline
         prose-table:table prose-table:w-full
-        prose-blockquote:text-inherit prose-blockquote:border-border
-        prose-td:border prose-td:border-border prose-td:p-2
-        prose-th:border prose-th:border-border prose-th:p-2
+        prose-blockquote:text-inherit prose-blockquote:border-border-default
+        prose-td:border prose-td:border-border-default prose-td:p-2
+        prose-th:border prose-th:border-border-default prose-th:p-2
         prose-h1:text-2xl prose-h1:font-normal prose-h1:mb-5 prose-h1:mt-0
         prose-h2:text-xl prose-h2:font-normal prose-h2:mb-4 prose-h2:mt-4
         prose-h3:text-lg prose-h3:font-normal prose-h3:mb-3 prose-h3:mt-3
@@ -151,7 +151,7 @@ export const MarkdownContent = memo(function MarkdownContent({
         prose-ol:my-2
         prose-ul:mt-0 prose-ul:mb-3
         prose-li:m-0
-        text-foreground-primary`,
+        text-text-default`,
         className,
       )}
     >

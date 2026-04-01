@@ -78,7 +78,7 @@ function ItemMenu({
         }}
         className={cn(
           "flex items-center justify-center w-6 h-6 rounded-md",
-          "text-foreground-secondary/40 hover:text-foreground hover:bg-background-tertiary/50",
+          "text-text-muted/40 hover:text-text-default hover:bg-background-muted/50",
           open
             ? "visible opacity-100"
             : "invisible group-hover:visible opacity-0 group-hover:opacity-100",
@@ -89,7 +89,7 @@ function ItemMenu({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-10 mt-1 w-28 rounded-lg border border-border bg-background py-1 shadow-lg"
+          className="absolute right-0 top-full z-10 mt-1 w-28 rounded-lg border border-border-default bg-background-default py-1 shadow-elevated"
         >
           {onEdit && (
             <button
@@ -99,7 +99,7 @@ function ItemMenu({
                 setOpen(false);
                 onEdit();
               }}
-              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-secondary transition-colors"
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-alt transition-colors"
             >
               Edit
             </button>
@@ -112,7 +112,7 @@ function ItemMenu({
                 setOpen(false);
                 onArchive();
               }}
-              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-secondary transition-colors"
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-background-alt transition-colors"
             >
               Archive
             </button>
@@ -161,7 +161,7 @@ function ProjectSection({
           className={cn(
             "flex items-center flex-1 min-w-0 gap-2 py-1.5 px-2.5 rounded-md text-[13px]",
             "transition-colors duration-150",
-            "text-foreground-secondary hover:text-foreground hover:bg-background-tertiary/50",
+            "text-text-muted hover:text-text-default hover:bg-background-muted/50",
           )}
         >
           {isExpanded ? (
@@ -191,7 +191,7 @@ function ProjectSection({
           title="New chat in project"
           className={cn(
             "flex items-center justify-center w-6 h-6 rounded-md mr-1 flex-shrink-0",
-            "text-foreground-secondary/50 hover:text-foreground hover:bg-background-tertiary/50",
+            "text-text-muted/50 hover:text-text-default hover:bg-background-muted/50",
             "invisible group-hover:visible opacity-0 group-hover:opacity-100",
           )}
         >
@@ -214,10 +214,10 @@ function ProjectSection({
                     "flex items-center gap-2 flex-1 min-w-0 py-1.5 pl-8 pr-1 rounded-md text-[13px]",
                     "transition-colors duration-150",
                     isActive
-                      ? "bg-background-tertiary/70 text-foreground font-medium"
+                      ? "bg-background-muted/70 text-text-default font-medium"
                       : isOpen
-                        ? "text-foreground hover:bg-background-tertiary/50"
-                        : "text-foreground-secondary/70 hover:text-foreground hover:bg-background-tertiary/50",
+                        ? "text-text-default hover:bg-background-muted/50"
+                        : "text-text-muted/70 hover:text-text-default hover:bg-background-muted/50",
                   )}
                 >
                   <span className="flex-1 min-w-0 truncate text-left">
@@ -237,7 +237,7 @@ function ProjectSection({
               onClick={() => onNavigate?.("projects")}
               className={cn(
                 "flex items-center w-full py-1 pl-8 pr-2.5 rounded-md text-[11px]",
-                "text-foreground-secondary/60 hover:text-foreground-secondary transition-colors duration-150",
+                "text-text-muted/60 hover:text-text-muted transition-colors duration-150",
               )}
             >
               View all {projectChats.length} chats
@@ -287,7 +287,7 @@ export function SidebarProjectsSection({
       >
         <span
           className={cn(
-            "text-[10px] font-semibold uppercase tracking-wider text-foreground-secondary/70 flex-1 pl-1.5",
+            "text-[10px] font-semibold uppercase tracking-wider text-text-muted/70 flex-1 pl-1.5",
             labelTransition,
             labelVisible
               ? "opacity-100 w-auto"
@@ -303,7 +303,7 @@ export function SidebarProjectsSection({
             title="New project"
             className={cn(
               "flex items-center justify-center w-6 h-6 rounded-md flex-shrink-0 mr-1",
-              "text-foreground-secondary/50 hover:text-foreground hover:bg-background-tertiary/50",
+              "text-text-muted/50 hover:text-text-default hover:bg-background-muted/50",
               "transition-opacity duration-150",
             )}
           >
@@ -322,7 +322,7 @@ export function SidebarProjectsSection({
               onClick={() => onNavigate?.("projects")}
               className={cn(
                 "flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200",
-                "text-foreground-secondary hover:text-foreground hover:bg-background-tertiary/50",
+                "text-text-muted hover:text-text-default hover:bg-background-muted/50",
               )}
             >
               <span
@@ -365,7 +365,7 @@ export function SidebarProjectsSection({
           >
             <span
               className={cn(
-                "text-[10px] font-semibold uppercase tracking-wider text-foreground-secondary/70 pl-1.5",
+                "text-[10px] font-semibold uppercase tracking-wider text-text-muted/70 pl-1.5",
                 labelTransition,
                 labelVisible
                   ? "opacity-100 w-auto"
@@ -387,8 +387,8 @@ export function SidebarProjectsSection({
                   className={cn(
                     "flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200",
                     activeTabId === tab.id
-                      ? "bg-background-tertiary/70 text-foreground"
-                      : "text-foreground-secondary hover:text-foreground hover:bg-background-tertiary/50",
+                      ? "bg-background-muted/70 text-text-default"
+                      : "text-text-muted hover:text-text-default hover:bg-background-muted/50",
                   )}
                 >
                   <MessageSquare className="w-4 h-4" />
@@ -409,10 +409,10 @@ export function SidebarProjectsSection({
                         "flex items-center gap-2 flex-1 min-w-0 py-1.5 rounded-md text-[13px]",
                         "transition-colors duration-150 px-2.5",
                         isActive
-                          ? "bg-background-tertiary/70 text-foreground font-medium"
+                          ? "bg-background-muted/70 text-text-default font-medium"
                           : isOpen
-                            ? "text-foreground hover:bg-background-tertiary/50"
-                            : "text-foreground-secondary/70 hover:text-foreground hover:bg-background-tertiary/50",
+                            ? "text-text-default hover:bg-background-muted/50"
+                            : "text-text-muted/70 hover:text-text-default hover:bg-background-muted/50",
                       )}
                     >
                       <span className="flex-1 min-w-0 truncate text-left">

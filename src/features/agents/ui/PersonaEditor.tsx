@@ -111,13 +111,13 @@ export function PersonaEditor({
       {/* Panel */}
       <div
         className={cn(
-          "relative z-10 w-full max-w-lg rounded-xl border border-border bg-background shadow-xl",
+          "relative z-10 w-full max-w-lg rounded-xl border border-border-default bg-background-default shadow-xl",
           "max-h-[85vh] flex flex-col",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95",
         )}
       >
         {/* Header */}
-        <div className="shrink-0 flex items-center justify-between border-b border-border px-5 py-4">
+        <div className="shrink-0 flex items-center justify-between border-b border-border-default px-5 py-4">
           <h2 className="text-sm font-semibold">
             {isReadOnly
               ? persona?.displayName
@@ -129,7 +129,7 @@ export function PersonaEditor({
             type="button"
             aria-label="Close"
             onClick={onClose}
-            className="rounded-md p-1 text-foreground-secondary hover:bg-background-secondary transition-colors"
+            className="rounded-md p-1 text-text-muted hover:bg-background-alt transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -146,12 +146,12 @@ export function PersonaEditor({
               <img
                 src={avatarUrl}
                 alt="Avatar preview"
-                className="h-16 w-16 rounded-full object-cover border border-border"
+                className="h-16 w-16 rounded-full object-cover border border-border-default"
               />
             ) : (
               <div
                 aria-hidden="true"
-                className="flex h-16 w-16 items-center justify-center rounded-full bg-background-secondary text-lg font-semibold text-foreground-secondary"
+                className="flex h-16 w-16 items-center justify-center rounded-full bg-background-alt text-lg font-semibold text-text-muted"
               >
                 {initials}
               </div>
@@ -160,8 +160,8 @@ export function PersonaEditor({
 
           {/* Display Name */}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
-              Display Name <span className="text-foreground-danger">*</span>
+            <span className="text-xs font-medium text-text-muted">
+              Display Name <span className="text-text-danger">*</span>
             </span>
             <input
               type="text"
@@ -171,8 +171,8 @@ export function PersonaEditor({
               required
               placeholder="e.g. Code Reviewer"
               className={cn(
-                "w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm",
-                "placeholder:text-foreground-secondary/40",
+                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
+                "placeholder:text-text-muted/40",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
                 isReadOnly && "opacity-70 cursor-not-allowed",
               )}
@@ -181,7 +181,7 @@ export function PersonaEditor({
 
           {/* Avatar URL */}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
+            <span className="text-xs font-medium text-text-muted">
               Avatar URL
             </span>
             <input
@@ -191,8 +191,8 @@ export function PersonaEditor({
               readOnly={isReadOnly}
               placeholder="https://example.com/avatar.png"
               className={cn(
-                "w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm",
-                "placeholder:text-foreground-secondary/40",
+                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
+                "placeholder:text-text-muted/40",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
                 isReadOnly && "opacity-70 cursor-not-allowed",
               )}
@@ -202,10 +202,10 @@ export function PersonaEditor({
           {/* System Prompt */}
           <label className="block space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-foreground-secondary">
-                System Prompt <span className="text-foreground-danger">*</span>
+              <span className="text-xs font-medium text-text-muted">
+                System Prompt <span className="text-text-danger">*</span>
               </span>
-              <span className="text-[10px] text-foreground-secondary/60">
+              <span className="text-[10px] text-text-muted/60">
                 {systemPrompt.length} chars
               </span>
             </div>
@@ -217,8 +217,8 @@ export function PersonaEditor({
               rows={6}
               placeholder="You are a helpful assistant that..."
               className={cn(
-                "w-full resize-y rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm leading-relaxed",
-                "placeholder:text-foreground-secondary/40",
+                "w-full resize-y rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm leading-relaxed",
+                "placeholder:text-text-muted/40",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
                 isReadOnly && "opacity-70 cursor-not-allowed",
               )}
@@ -227,7 +227,7 @@ export function PersonaEditor({
 
           {/* Provider */}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
+            <span className="text-xs font-medium text-text-muted">
               Provider
             </span>
             <select
@@ -235,7 +235,7 @@ export function PersonaEditor({
               onChange={(e) => setProvider(e.target.value as ProviderType | "")}
               disabled={isReadOnly}
               className={cn(
-                "w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm",
+                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
                 isReadOnly && "opacity-70 cursor-not-allowed",
               )}
@@ -251,9 +251,7 @@ export function PersonaEditor({
 
           {/* Model */}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-foreground-secondary">
-              Model
-            </span>
+            <span className="text-xs font-medium text-text-muted">Model</span>
             <input
               type="text"
               value={model}
@@ -261,8 +259,8 @@ export function PersonaEditor({
               readOnly={isReadOnly}
               placeholder="e.g. claude-sonnet-4-20250514"
               className={cn(
-                "w-full rounded-lg border border-border bg-background-secondary px-3 py-2 text-sm",
-                "placeholder:text-foreground-secondary/40",
+                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
+                "placeholder:text-text-muted/40",
                 "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
                 isReadOnly && "opacity-70 cursor-not-allowed",
               )}
@@ -271,7 +269,7 @@ export function PersonaEditor({
         </form>
 
         {/* Footer actions */}
-        <div className="shrink-0 border-t border-border px-5 py-4">
+        <div className="shrink-0 border-t border-border-default px-5 py-4">
           <div className="flex items-center justify-end gap-2">
             {isReadOnly && onDuplicate && persona ? (
               <Button

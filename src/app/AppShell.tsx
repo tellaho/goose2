@@ -339,7 +339,7 @@ export function AppShell({ children }: { children?: React.ReactNode }) {
   };
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background-default text-text-default">
       {/* Tab bar — full width across the top */}
       <TabBar
         tabs={tabs}
