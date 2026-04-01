@@ -206,8 +206,8 @@ function HomeInput({
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-full",
                 hasContent
-                  ? "bg-foreground text-background-primary hover:opacity-90"
-                  : "cursor-default bg-text-default/10 text-text-alt",
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                  : "cursor-default border border-border-default text-text-muted",
               )}
             >
               <ArrowUp className="h-4 w-4" />
