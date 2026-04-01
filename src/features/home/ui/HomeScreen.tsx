@@ -146,7 +146,7 @@ function HomeInput({
 
   return (
     <div className="px-4 pb-6 pt-2">
-      <div className="relative mx-auto max-w-3xl rounded-2xl border border-border-default bg-background-alt px-4 pb-3 pt-4 shadow-elevated">
+      <div className="relative mx-auto max-w-3xl rounded-2xl border border-input bg-background-default px-4 pb-3 pt-4">
         <MentionAutocomplete
           personas={personas}
           query={mentionQuery}

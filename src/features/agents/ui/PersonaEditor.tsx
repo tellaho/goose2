@@ -1,7 +1,24 @@
 import { useState, useEffect, useCallback } from "react";
-import { X, Copy } from "lucide-react";
+import { Copy } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/shared/ui/dialog";
+import { Input } from "@/shared/ui/input";
+import { Textarea } from "@/shared/ui/textarea";
+import { Label } from "@/shared/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select";
 import type {
   Persona,
   ProviderType,
@@ -88,52 +105,25 @@ export function PersonaEditor({
     ],
   );
 
-  if (!isOpen) return null;
-
   const initials = displayName.charAt(0).toUpperCase() || "?";
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label={
-        isEditing ? `Edit persona ${persona?.displayName}` : "Create persona"
-      }
-      className="fixed inset-0 z-50 flex items-center justify-center"
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/40 motion-safe:animate-in motion-safe:fade-in"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Panel */}
-      <div
-        className={cn(
-          "relative z-10 w-full max-w-lg rounded-xl border border-border-default bg-background-default shadow-xl",
-          "max-h-[85vh] flex flex-col",
-          "motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95",
-        )}
-      >
-        {/* Header */}
-        <div className="shrink-0 flex items-center justify-between border-b border-border-default px-5 py-4">
-          <h2 className="text-sm font-semibold">
+      <DialogContent className="max-w-lg max-h-[85vh] flex flex-col gap-0 p-0">
+        <DialogHeader className="shrink-0 border-b px-5 py-4">
+          <DialogTitle className="text-sm font-semibold">
             {isReadOnly
               ? persona?.displayName
               : isEditing
                 ? "Edit Persona"
                 : "New Persona"}
-          </h2>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-            className="rounded-md p-1 text-text-muted hover:bg-background-alt transition-colors"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+          </DialogTitle>
+        </DialogHeader>
 
         <form
           id="persona-form"
@@ -159,57 +149,45 @@ export function PersonaEditor({
           </div>
 
           {/* Display Name */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">
               Display Name <span className="text-text-danger">*</span>
-            </span>
-            <input
-              type="text"
+            </Label>
+            <Input
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               readOnly={isReadOnly}
               required
               placeholder="e.g. Code Reviewer"
-              className={cn(
-                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
-                isReadOnly && "opacity-70 cursor-not-allowed",
-              )}
+              className={cn(isReadOnly && "opacity-70 cursor-not-allowed")}
             />
-          </label>
+          </div>
 
           {/* Avatar URL */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">
               Avatar URL
-            </span>
-            <input
-              type="text"
+            </Label>
+            <Input
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               readOnly={isReadOnly}
               placeholder="https://example.com/avatar.png"
-              className={cn(
-                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
-                isReadOnly && "opacity-70 cursor-not-allowed",
-              )}
+              className={cn(isReadOnly && "opacity-70 cursor-not-allowed")}
             />
-          </label>
+          </div>
 
           {/* System Prompt */}
-          <label className="block space-y-1">
+          <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-text-muted">
+              <Label className="text-xs font-medium text-text-muted">
                 System Prompt <span className="text-text-danger">*</span>
-              </span>
+              </Label>
               <span className="text-[10px] text-text-muted/60">
                 {systemPrompt.length} chars
               </span>
             </div>
-            <textarea
+            <Textarea
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               readOnly={isReadOnly}
@@ -217,97 +195,86 @@ export function PersonaEditor({
               rows={6}
               placeholder="You are a helpful assistant that..."
               className={cn(
-                "w-full resize-y rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm leading-relaxed",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
+                "leading-relaxed",
                 isReadOnly && "opacity-70 cursor-not-allowed",
               )}
             />
-          </label>
+          </div>
 
           {/* Provider */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">
               Provider
-            </span>
-            <select
-              value={provider}
-              onChange={(e) => setProvider(e.target.value as ProviderType | "")}
+            </Label>
+            <Select
+              value={provider || "__none__"}
+              onValueChange={(val) =>
+                setProvider(val === "__none__" ? "" : (val as ProviderType))
+              }
               disabled={isReadOnly}
-              className={cn(
-                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
-                isReadOnly && "opacity-70 cursor-not-allowed",
-              )}
             >
-              <option value="">None</option>
-              {PROVIDER_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </label>
+              <SelectTrigger
+                className={cn(isReadOnly && "opacity-70 cursor-not-allowed")}
+              >
+                <SelectValue placeholder="None" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__none__">None</SelectItem>
+                {PROVIDER_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Model */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">Model</span>
-            <input
-              type="text"
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">Model</Label>
+            <Input
               value={model}
               onChange={(e) => setModel(e.target.value)}
               readOnly={isReadOnly}
               placeholder="e.g. claude-sonnet-4-20250514"
-              className={cn(
-                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
-                isReadOnly && "opacity-70 cursor-not-allowed",
-              )}
+              className={cn(isReadOnly && "opacity-70 cursor-not-allowed")}
             />
-          </label>
+          </div>
         </form>
 
         {/* Footer actions */}
-        <div className="shrink-0 border-t border-border-default px-5 py-4">
-          <div className="flex items-center justify-end gap-2">
-            {isReadOnly && onDuplicate && persona ? (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => onDuplicate(persona)}
-              >
-                <Copy className="h-3.5 w-3.5" />
-                Duplicate
+        <DialogFooter className="shrink-0 border-t px-5 py-4">
+          {isReadOnly && onDuplicate && persona ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => onDuplicate(persona)}
+            >
+              <Copy className="h-3.5 w-3.5" />
+              Duplicate
+            </Button>
+          ) : (
+            <>
+              <Button type="button" variant="ghost" size="sm" onClick={onClose}>
+                Cancel
               </Button>
-            ) : (
-              <>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClose}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  form="persona-form"
-                  size="sm"
-                  disabled={!isValid || isPending}
-                >
-                  {isPending
-                    ? "Saving..."
-                    : isEditing
-                      ? "Save Changes"
-                      : "Create"}
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+              <Button
+                type="submit"
+                form="persona-form"
+                size="sm"
+                disabled={!isValid || isPending}
+              >
+                {isPending
+                  ? "Saving..."
+                  : isEditing
+                    ? "Save Changes"
+                    : "Create"}
+              </Button>
+            </>
+          )}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

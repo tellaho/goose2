@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/shared/ui/dialog";
+import { Input } from "@/shared/ui/input";
+import { Textarea } from "@/shared/ui/textarea";
+import { Label } from "@/shared/ui/label";
 import { createSkill, updateSkill } from "../api/skills";
 
 const KEBAB_CASE_REGEX = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -87,44 +96,19 @@ export function CreateSkillDialog({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label={isEditing ? "Edit Skill" : "New Skill"}
-      className="fixed inset-0 z-50 flex items-center justify-center"
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) handleClose();
+      }}
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/40 motion-safe:animate-in motion-safe:fade-in"
-        onClick={handleClose}
-        aria-hidden="true"
-      />
-
-      {/* Panel */}
-      <div
-        className={cn(
-          "relative z-10 w-full max-w-lg rounded-xl border border-border-default bg-background-default shadow-xl",
-          "max-h-[85vh] flex flex-col",
-          "motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95",
-        )}
-      >
-        {/* Header */}
-        <div className="shrink-0 flex items-center justify-between border-b border-border-default px-5 py-4">
-          <h2 className="text-sm font-semibold">
+      <DialogContent className="max-w-lg max-h-[85vh] flex flex-col gap-0 p-0">
+        <DialogHeader className="shrink-0 border-b px-5 py-4">
+          <DialogTitle className="text-sm font-semibold">
             {isEditing ? "Edit Skill" : "New Skill"}
-          </h2>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={handleClose}
-            className="rounded-md p-1 text-text-muted hover:bg-background-alt transition-colors"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+          </DialogTitle>
+        </DialogHeader>
 
         {/* Scrollable content */}
         <form
@@ -133,20 +117,17 @@ export function CreateSkillDialog({
           className="min-h-0 flex-1 overflow-y-auto space-y-4 p-5"
         >
           {/* Name */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">
               Name <span className="text-text-danger">*</span>
-            </span>
-            <input
-              type="text"
+            </Label>
+            <Input
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
               placeholder="my-skill-name"
               readOnly={isEditing}
               className={cn(
-                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm font-mono",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
+                "font-mono",
                 isEditing && "opacity-60 cursor-not-allowed",
               )}
             />
@@ -155,53 +136,43 @@ export function CreateSkillDialog({
                 Must be kebab-case (e.g. code-review)
               </p>
             )}
-          </label>
+          </div>
 
           {/* Description */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">
               Description <span className="text-text-danger">*</span>
-            </span>
-            <input
-              type="text"
+            </Label>
+            <Input
               value={description}
               onChange={(e) => {
                 setDescription(e.target.value);
                 setError(null);
               }}
               placeholder="What it does and when to use it..."
-              className={cn(
-                "w-full rounded-lg border border-border-default bg-background-alt px-3 py-2 text-sm",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
-              )}
             />
-          </label>
+          </div>
 
           {/* Instructions */}
-          <label className="block space-y-1">
-            <span className="text-xs font-medium text-text-muted">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-text-muted">
               Instructions
-            </span>
-            <textarea
+            </Label>
+            <Textarea
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
               rows={10}
               placeholder="Markdown instructions the agent will follow..."
-              className={cn(
-                "w-full resize-y rounded-lg border border-border-default bg-background-alt px-3 py-2 text-xs font-mono leading-relaxed",
-                "placeholder:text-text-muted/40",
-                "focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
-              )}
+              className="resize-y text-xs font-mono leading-relaxed"
             />
-          </label>
+          </div>
 
           {/* Error */}
           {error && <p className="text-xs text-text-danger">{error}</p>}
         </form>
 
         {/* Footer */}
-        <div className="shrink-0 border-t border-border-default px-5 py-4 flex items-center justify-end gap-2">
+        <DialogFooter className="shrink-0 border-t px-5 py-4">
           <Button
             type="button"
             variant="ghost"
@@ -220,8 +191,8 @@ export function CreateSkillDialog({
                 ? "Save Changes"
                 : "Create Skill"}
           </Button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

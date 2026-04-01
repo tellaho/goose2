@@ -6,8 +6,18 @@ import {
   FolderKanban,
   Info,
   Stethoscope,
-  X,
 } from "lucide-react";
+import { Dialog, DialogContent } from "@/shared/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent as AlertDialogContentPrimitive,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/shared/ui/alert-dialog";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { DoctorSettings } from "./DoctorSettings";
 import {
@@ -82,213 +92,189 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   }, [activeSection]);
 
   return (
-    <div
-      role="dialog"
-      className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center bg-background-default/80 backdrop-blur-sm transition-opacity duration-300",
-        isLoaded ? "opacity-100" : "opacity-0",
-      )}
-      onClick={onClose}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") onClose();
-      }}
-    >
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: stopPropagation on inner container is not a meaningful interaction */}
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: click handler only prevents backdrop dismiss propagation */}
-      <div
-        className={cn(
-          "flex h-[600px] w-full max-w-3xl overflow-hidden rounded-xl border bg-background-default shadow-2xl transition-all duration-500 ease-out",
-          isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95",
-          isTransitioning ? "scale-[0.98]" : "scale-100",
-        )}
-        onClick={(e) => e.stopPropagation()}
+    <>
+      <Dialog
+        open={true}
+        onOpenChange={(open) => {
+          if (!open) onClose();
+        }}
       >
-        {/* Sidebar */}
-        <div
-          className={cn(
-            "flex w-44 flex-col border-r bg-background-alt/50 transition-all duration-700 ease-out",
-            isLoaded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2",
-          )}
-        >
+        <DialogContent className="max-w-3xl h-[600px] flex gap-0 p-0 [&>button:last-child]:hidden">
+          {/* Sidebar */}
           <div
             className={cn(
-              "px-4 py-4 transition-all duration-500 ease-out",
+              "flex w-44 flex-col border-r bg-background-default transition-all duration-700 ease-out",
               isLoaded
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-2",
             )}
           >
-            <h2 className="text-sm font-semibold">Settings</h2>
-          </div>
-          <nav className="flex flex-col gap-1 px-2">
-            {NAV_ITEMS.map((item, index) => (
-              <button
-                type="button"
-                key={item.id}
-                onClick={() => setActiveSection(item.id)}
-                className={cn(
-                  "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-600 ease-out",
-                  activeSection === item.id
-                    ? "bg-background-default text-text-default shadow-mini"
-                    : "text-text-muted hover:bg-background-alt/50 hover:text-text-default duration-300",
-                  isLoaded
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-4",
-                )}
-                style={{
-                  transitionDelay: isLoaded ? "0ms" : `${index * 40 + 300}ms`,
-                }}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        {/* Content */}
-        <div className="relative flex-1 overflow-y-auto">
-          <button
-            type="button"
-            onClick={onClose}
-            className="absolute right-4 top-4 z-10 rounded-md p-1 text-text-muted transition-colors hover:text-text-default"
-          >
-            <X className="h-4 w-4" />
-          </button>
-
-          <div
-            className={cn(
-              "px-6 py-4 transition-all duration-400 ease-out",
-              isTransitioning
-                ? "opacity-0 translate-y-2"
-                : "opacity-100 translate-y-0",
-            )}
-          >
             <div
               className={cn(
-                "transition-all duration-600 ease-out",
+                "px-4 py-4 transition-all duration-500 ease-out",
                 isLoaded
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4",
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-2",
               )}
-              style={{
-                transitionDelay: isLoaded ? "400ms" : "0ms",
-              }}
             >
-              {activeSection === "appearance" && <AppearanceSettings />}
-              {activeSection === "doctor" && <DoctorSettings />}
-              {activeSection === "general" && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold">General</h3>
-                    <p className="mt-1 text-sm text-text-muted">
-                      General settings will appear here.
-                    </p>
-                  </div>
-                </div>
-              )}
-              {activeSection === "projects" && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold">Projects</h3>
-                    <p className="mt-1 text-sm text-text-muted">
-                      Manage your projects.
-                    </p>
-                  </div>
+              <h2 className="text-sm font-semibold">Settings</h2>
+            </div>
+            <nav className="flex flex-col gap-1 px-2">
+              {NAV_ITEMS.map((item, index) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  onClick={() => setActiveSection(item.id)}
+                  className={cn(
+                    "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-600 ease-out",
+                    activeSection === item.id
+                      ? "bg-muted text-text-default"
+                      : "text-text-muted hover:bg-background-alt/50 hover:text-text-default duration-300",
+                    isLoaded
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 translate-x-4",
+                  )}
+                  style={{
+                    transitionDelay: isLoaded ? "0ms" : `${index * 40 + 300}ms`,
+                  }}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+          </div>
 
-                  {/* Archived Projects */}
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-semibold">Archived Projects</h3>
-                    {!loadingArchived && archivedProjects.length === 0 && (
-                      <p className="text-xs text-text-muted">
-                        No archived projects.
+          {/* Content */}
+          <div className="relative flex-1 overflow-y-auto">
+            <div
+              className={cn(
+                "px-6 py-4 transition-all duration-400 ease-out",
+                isTransitioning
+                  ? "opacity-0 translate-y-2"
+                  : "opacity-100 translate-y-0",
+              )}
+            >
+              <div
+                className={cn(
+                  "transition-all duration-600 ease-out",
+                  isLoaded
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4",
+                )}
+                style={{
+                  transitionDelay: isLoaded ? "400ms" : "0ms",
+                }}
+              >
+                {activeSection === "appearance" && <AppearanceSettings />}
+                {activeSection === "doctor" && <DoctorSettings />}
+                {activeSection === "general" && (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold">General</h3>
+                      <p className="mt-1 text-sm text-text-muted">
+                        General settings will appear here.
                       </p>
-                    )}
-                    {archivedProjects.map((project) => (
-                      <div
-                        key={project.id}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-border-default px-3 py-2"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span
-                            className="inline-block w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: project.color }}
-                          />
-                          <span className="text-sm truncate">
-                            {project.name}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5 flex-shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => handleRestore(project.id)}
-                            className="px-2 py-1 text-xs font-medium rounded-md border border-border-default hover:bg-background-muted transition-colors"
-                          >
-                            Restore
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setDeletingProject(project)}
-                            className="px-2 py-1 text-xs font-medium rounded-md text-text-danger hover:bg-background-danger/10 transition-colors"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
-              )}
-              {activeSection === "about" && (
-                <div>
-                  <h3 className="text-lg font-semibold">About</h3>
-                  <p className="mt-1 text-sm text-text-muted">
-                    About information will appear here.
-                  </p>
-                </div>
-              )}
+                )}
+                {activeSection === "projects" && (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold">Projects</h3>
+                      <p className="mt-1 text-sm text-text-muted">
+                        Manage your projects.
+                      </p>
+                    </div>
+
+                    {/* Archived Projects */}
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-semibold">
+                        Archived Projects
+                      </h3>
+                      {!loadingArchived && archivedProjects.length === 0 && (
+                        <p className="text-xs text-text-muted">
+                          No archived projects.
+                        </p>
+                      )}
+                      {archivedProjects.map((project) => (
+                        <div
+                          key={project.id}
+                          className="flex items-center justify-between gap-3 rounded-lg border border-border-default px-3 py-2"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span
+                              className="inline-block w-2 h-2 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: project.color }}
+                            />
+                            <span className="text-sm truncate">
+                              {project.name}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleRestore(project.id)}
+                              className="px-2 py-1 text-xs font-medium rounded-md border border-border-default hover:bg-background-muted transition-colors"
+                            >
+                              Restore
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeletingProject(project)}
+                              className="px-2 py-1 text-xs font-medium rounded-md text-text-danger hover:bg-background-danger/10 transition-colors"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {activeSection === "about" && (
+                  <div>
+                    <h3 className="text-lg font-semibold">About</h3>
+                    <p className="mt-1 text-sm text-text-muted">
+                      About information will appear here.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
 
-      {deletingProject && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setDeletingProject(null)}
-            aria-hidden="true"
-          />
-          <div className="relative z-10 w-full max-w-sm rounded-xl border border-border-default bg-background-default p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-semibold">
-              Delete project permanently?
-            </h3>
-            <p className="text-sm text-text-muted">
+      <AlertDialog
+        open={!!deletingProject}
+        onOpenChange={(open) => {
+          if (!open) setDeletingProject(null);
+        }}
+      >
+        <AlertDialogContentPrimitive>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete project permanently?</AlertDialogTitle>
+            <AlertDialogDescription>
               Are you sure you want to permanently delete &quot;
-              {deletingProject.name}&quot;? This cannot be undone.
-            </p>
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setDeletingProject(null)}
-                className="px-3 py-1.5 text-xs font-medium rounded-md hover:bg-background-alt transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => {
+              {deletingProject?.name}&quot;? This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (deletingProject) {
                   handleDelete(deletingProject.id);
                   setDeletingProject(null);
-                }}
-                className="px-3 py-1.5 text-xs font-medium rounded-md bg-background-danger text-text-inverse shadow-mini hover:bg-background-danger/90 transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContentPrimitive>
+      </AlertDialog>
+    </>
   );
 }

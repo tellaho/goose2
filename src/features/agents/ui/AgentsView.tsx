@@ -3,6 +3,16 @@ import { Bot, Plus, Circle, Upload } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { SearchBar } from "@/shared/ui/SearchBar";
 import { Button } from "@/shared/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/shared/ui/alert-dialog";
 import { useAgentStore } from "@/features/agents/stores/agentStore";
 import { PersonaGallery } from "@/features/agents/ui/PersonaGallery";
 import { PersonaEditor } from "@/features/agents/ui/PersonaEditor";
@@ -295,38 +305,28 @@ export function AgentsView() {
       />
 
       {/* Delete confirmation dialog */}
-      {deletingPersona && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setDeletingPersona(null)}
-            aria-hidden="true"
-          />
-          <div className="relative z-10 w-full max-w-sm rounded-xl border border-border-default bg-background-default p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-semibold">Delete persona?</h3>
-            <p className="text-sm text-text-muted">
+      <AlertDialog
+        open={!!deletingPersona}
+        onOpenChange={(open) => {
+          if (!open) setDeletingPersona(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete persona?</AlertDialogTitle>
+            <AlertDialogDescription>
               Are you sure you want to delete &quot;
-              {deletingPersona.displayName}&quot;? This cannot be undone.
-            </p>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setDeletingPersona(null)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleConfirmDeletePersona}
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+              {deletingPersona?.displayName}&quot;? This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDeletePersona}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Export notification toast */}
       {notification && (

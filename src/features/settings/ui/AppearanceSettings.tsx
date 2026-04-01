@@ -73,7 +73,7 @@ export function AppearanceSettings() {
               className={cn(
                 "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors",
                 theme === option.value
-                  ? "bg-background-default text-text-default shadow-mini"
+                  ? "bg-muted text-text-default"
                   : "text-text-muted hover:text-text-default",
               )}
             >
@@ -124,7 +124,7 @@ export function AppearanceSettings() {
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm transition-colors",
                 density === option.value
-                  ? "bg-background-default text-text-default shadow-mini"
+                  ? "bg-muted text-text-default"
                   : "text-text-muted hover:text-text-default",
               )}
             >

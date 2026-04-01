@@ -190,7 +190,7 @@ export function ChatInput({
     <TooltipProvider delayDuration={300}>
       <div className={cn("px-4 pb-6 pt-2", className)} ref={containerRef}>
         <div className="mx-auto max-w-3xl">
-          <div className="relative rounded-2xl border border-border-default bg-background-alt px-4 pb-3 pt-4 shadow-elevated">
+          <div className="relative rounded-2xl border border-input bg-background-default px-4 pb-3 pt-4">
             <MentionAutocomplete
               personas={personas}
               query={mentionQuery}

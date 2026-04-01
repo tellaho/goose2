@@ -146,7 +146,7 @@ export function Sidebar({
   return (
     <div
       className={cn(
-        "relative h-full overflow-hidden bg-background-alt border border-border-default/50",
+        "relative h-full overflow-hidden bg-background-default border border-border-default/50",
         "transition-[width] duration-300 ease-in-out",
         className,
       )}
@@ -291,7 +291,7 @@ export function Sidebar({
                       ? "justify-center px-0 py-1.5"
                       : "gap-2.5 px-3 py-1.5",
                     isActive
-                      ? "bg-background-alt text-text-default"
+                      ? "bg-muted text-text-default"
                       : "text-text-muted hover:text-text-default hover:bg-background-muted/50",
                   )}
                   aria-current={isActive ? "page" : undefined}

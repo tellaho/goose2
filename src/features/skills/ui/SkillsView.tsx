@@ -11,6 +11,16 @@ import {
 } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { SearchBar } from "@/shared/ui/SearchBar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/shared/ui/alert-dialog";
 import { useFileImportZone } from "@/shared/hooks/useFileImportZone";
 import { CreateSkillDialog } from "./CreateSkillDialog";
 import {
@@ -418,38 +428,28 @@ export function SkillsView() {
       />
 
       {/* Delete confirmation dialog */}
-      {deletingSkill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setDeletingSkill(null)}
-            aria-hidden="true"
-          />
-          <div className="relative z-10 w-full max-w-sm rounded-xl border border-border-default bg-background-default p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-semibold">Delete skill?</h3>
-            <p className="text-sm text-text-muted">
-              Are you sure you want to delete &quot;{deletingSkill.name}&quot;?
+      <AlertDialog
+        open={!!deletingSkill}
+        onOpenChange={(open) => {
+          if (!open) setDeletingSkill(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete skill?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete &quot;{deletingSkill?.name}&quot;?
               This cannot be undone.
-            </p>
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setDeletingSkill(null)}
-                className="px-3 py-1.5 text-xs font-medium rounded-md hover:bg-background-alt transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleConfirmDeleteSkill}
-                className="px-3 py-1.5 text-xs font-medium rounded-md bg-background-danger text-text-inverse shadow-mini hover:bg-background-danger/90 transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDeleteSkill}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Export notification toast */}
       {notification && (
