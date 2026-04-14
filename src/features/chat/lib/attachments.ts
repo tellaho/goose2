@@ -1,5 +1,6 @@
 import type {
   ChatAttachmentDraft,
+  Message,
   MessageAttachment,
 } from "@/shared/types/messages";
 
@@ -69,4 +70,50 @@ export function buildAcpImages(
   );
 
   return images.length > 0 ? images : undefined;
+}
+
+/**
+ * Reconstruct ChatAttachmentDraft[] from a stored user message so retry/edit
+ * can forward attachments that were present on the original send.  Image
+ * content blocks carry base64 data; file/directory attachments are rebuilt
+ * from metadata.attachments.
+ */
+export function rebuildAttachmentDrafts(message: Message): ChatAttachmentDraft[] {
+  const drafts: ChatAttachmentDraft[] = [];
+
+  // Rebuild image drafts from ImageContent blocks embedded in the message
+  for (const block of message.content) {
+    if (block.type === "image" && block.source.type === "base64") {
+      drafts.push({
+        id: crypto.randomUUID(),
+        kind: "image",
+        name: "image",
+        mimeType: block.source.mediaType,
+        base64: block.source.data,
+        previewUrl: `data:${block.source.mediaType};base64,${block.source.data}`,
+      });
+    }
+  }
+
+  // Rebuild file/directory drafts from metadata.attachments
+  for (const att of message.metadata?.attachments ?? []) {
+    if (att.type === "directory" && att.path) {
+      drafts.push({
+        id: crypto.randomUUID(),
+        kind: "directory",
+        name: att.name,
+        path: att.path,
+      });
+    } else if (att.type === "file" && att.path) {
+      drafts.push({
+        id: crypto.randomUUID(),
+        kind: "file",
+        name: att.name,
+        path: att.path,
+        mimeType: att.mimeType,
+      });
+    }
+  }
+
+  return drafts;
 }

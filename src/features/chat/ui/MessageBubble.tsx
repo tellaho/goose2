@@ -472,6 +472,7 @@ export const MessageBubble = memo(function MessageBubble({
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
               onKeyDown={handleEditKeyDown}
+              aria-label={t("chat:edit.textareaAriaLabel")}
               rows={1}
               className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-[13px] leading-relaxed text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
             />
